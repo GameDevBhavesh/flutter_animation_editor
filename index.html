@@ -50,7 +50,7 @@
           serviceWorkerVersion: serviceWorkerVersion,
         }
       }).then(function (engineInitializer) {
-        return engineInitializer.initializeEngine();
+        return engineInitializer.initializeEngine({ renderer: "canvaskit" });
       }).then(function (appRunner) {
         return appRunner.runApp();
       });
