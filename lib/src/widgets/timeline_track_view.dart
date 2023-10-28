@@ -76,11 +76,14 @@ class TimelineTrackView extends StatelessWidget {
                   Expanded(
                     child: KeyframesRow(
                       controller: controller,
-                      handleLineColor: handleLineColor,
-                      handleLineWidth: handleLineWidth,
-                      // pixelPerSeconds:c pixelPerSeconds,
-                      // handleTime: handleTime,
+                      handleBuilder: (context) {
+                        return Container(
+                            color: handleLineColor,
+                            width: handleLineWidth,
+                            height: MediaQuery.of(context).size.height);
+                      },
                       onKeyframeMove: onKeyframeMove,
+
                       keyframes: (alwaysShowUnionKeyframes || track.isCollapsed)
                           ? getUnionKeyframes()
                           : null,

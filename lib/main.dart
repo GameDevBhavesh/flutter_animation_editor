@@ -1,6 +1,7 @@
 import 'package:animation_editor/src/controller.dart';
 import 'package:animation_editor/src/models.dart';
 import 'package:animation_editor/src/view.dart';
+
 import 'package:flutter/material.dart';
 
 void main() {

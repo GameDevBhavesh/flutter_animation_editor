@@ -6,27 +6,27 @@ import '../models.dart';
 class KeyframesRow extends StatelessWidget {
   const KeyframesRow(
       {super.key,
-      required this.handleLineColor,
-      required this.handleLineWidth,
       required this.onKeyframeMove,
+      this.onKeyframeMoveStart,
+      this.onKeyframeMoveEnd,
       this.onKeyframeSelected,
       required this.keyframes,
       this.scrollController,
-      this.valueBuilder,
+      this.handleBuilder,
       this.controller});
 
   final AnimationEditorController? controller;
   //params
   final Function(Keyframe keyframe, DragUpdateDetails details) onKeyframeMove;
+  final Function(Keyframe keyframe, DragStartDetails details)?
+      onKeyframeMoveStart;
+  final Function(Keyframe keyframe, DragEndDetails details)? onKeyframeMoveEnd;
   final Function(Keyframe keyframe)? onKeyframeSelected;
 
   final List<Keyframe>? keyframes;
   final ScrollController? scrollController;
-  final double handleLineWidth;
-  final Color handleLineColor;
 
-  final Map<Type, Widget Function(BuildContext context, Keyframe keyframe)>?
-      valueBuilder;
+  final Widget Function(BuildContext context)? handleBuilder;
 
   //styling
   static const Color backgroundColor = Color.fromARGB(255, 15, 15, 15);
@@ -44,31 +44,14 @@ class KeyframesRow extends StatelessWidget {
           controller!.animationController.duration!.inSeconds *
               controller!.pixelPerSeconds +
           300,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: Stack(
         children: [
-          // const ColoredBox(
-          //   color: Colors.white,
-          //   child: SizedBox(
-          //     width: 5,
-          //   ),
-          // ),
-          Expanded(
-            child: Stack(
-              children: [
-                if (keyframes != null)
-                  for (final keyframe in keyframes!) buildKeyframe(keyframe),
-                Positioned(
-                  left: controller!.time * controller!.pixelPerSeconds,
-                  child: Container(
-                    color: handleLineColor,
-                    height: MediaQuery.of(context).size.height,
-                    width: handleLineWidth,
-                  ),
-                )
-              ],
-            ),
-          ),
+          if (keyframes != null)
+            for (final keyframe in keyframes!) buildKeyframe(keyframe),
+          Positioned(
+            left: controller!.time * controller!.pixelPerSeconds,
+            child: handleBuilder!(context),
+          )
         ],
       ),
     );
@@ -92,8 +75,16 @@ class KeyframesRow extends StatelessWidget {
             onKeyframeMove(keyframe, details);
           },
           onHorizontalDragStart: (details) {
+            if (onKeyframeMoveStart != null) {
+              onKeyframeMoveStart!(keyframe, details);
+            }
             if (onKeyframeSelected != null) {
               onKeyframeSelected!(keyframe);
+            }
+          },
+          onHorizontalDragEnd: (details) {
+            if (onKeyframeMoveEnd != null) {
+              onKeyframeMoveEnd!(keyframe, details);
             }
           },
           onTap: () {

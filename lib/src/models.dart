@@ -56,14 +56,21 @@ class AnimDuration {
 
 class Track {
   final String name;
+  // final Map<String, dynamic> defaultValue;
   bool isCollapsed;
   final Map<String, List<Keyframe>> keyframes;
 
-  Track({required this.name, required this.keyframes, this.isCollapsed = true});
+  Track({
+    required this.name,
+    required this.keyframes,
+    this.isCollapsed = true,
+    // required this.defaultValue
+  });
 
   factory Track.fromJson(Map<String, dynamic> json) => Track(
         name: json["name"],
         isCollapsed: json["isCollapsed"],
+        // defaultValue: json["defaultValue"],
         keyframes: (json["keyframes"] as Map<String, dynamic>).map(
             (key, value) => MapEntry(key,
                 (value as List).map((e) => Keyframe.fromJson(e)).toList())),
@@ -72,6 +79,7 @@ class Track {
   Map<String, dynamic> toJson() => {
         "name": name,
         "isCollapsed": isCollapsed,
+        // "defaultValue": defaultValue,
         "keyframes": keyframes.map((key, value) =>
             MapEntry(key, value.map((e) => e.toJson()).toList())),
       };
@@ -82,11 +90,13 @@ class Keyframe {
   double time;
   final String itemId;
   final String propertyKey;
-  final Map<String, dynamic> propertyValue;
+  final String propertyType;
+  Map<String, dynamic> propertyValue;
   final String curve;
 
   Keyframe(
-      {required this.time,
+      {this.propertyType = "double",
+      required this.time,
       required this.itemId,
       required this.propertyKey,
       required this.propertyValue,
@@ -115,6 +125,7 @@ class Keyframe {
         itemId: json["itemId"],
         propertyKey: json["propertyKey"],
         propertyValue: json["propertyValue"],
+        propertyType: json["propertyType"],
         curve: json["curve"],
         id: json["id"],
       );
@@ -124,6 +135,7 @@ class Keyframe {
         "itemId": itemId,
         "propertyKey": propertyKey,
         "propertyValue": propertyValue,
+        "propertyType": propertyType,
         "curve": curve,
         "id": id,
       };

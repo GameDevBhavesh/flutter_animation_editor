@@ -48,12 +48,14 @@ class _AnimationEditorPageState extends State<AnimationEditorPage>
                     time: 0.01,
                     itemId: "item1",
                     propertyKey: PropertyKeyType.positionRelative.name,
+                    propertyType: "Offset",
                     propertyValue: {"x": 1, "y": 2},
                     curve: "linear"),
                 Keyframe(
                     time: 3,
                     itemId: "item1",
                     propertyKey: PropertyKeyType.positionRelative.name,
+                    propertyType: "Offset",
                     propertyValue: {"x": 1, "y": 2},
                     curve: "linear")
               ],
@@ -61,12 +63,14 @@ class _AnimationEditorPageState extends State<AnimationEditorPage>
                 Keyframe(
                     time: 0.01,
                     itemId: "item1",
+                    propertyType: "Offset",
                     propertyKey: PropertyKeyType.positionRelative.name,
                     propertyValue: {"x": 1, "y": 2},
                     curve: "linear"),
                 Keyframe(
                     time: 3,
                     itemId: "item1",
+                    propertyType: "Offset",
                     propertyKey: PropertyKeyType.positionRelative.name,
                     propertyValue: {"x": 1, "y": 2},
                     curve: "linear")
@@ -78,12 +82,14 @@ class _AnimationEditorPageState extends State<AnimationEditorPage>
                     time: 0.01,
                     itemId: "item1",
                     propertyKey: PropertyKeyType.positionRelative.name,
+                    propertyType: "Offset",
                     propertyValue: {"x": 1, "y": 2},
                     curve: "linear"),
                 Keyframe(
                     time: 3,
                     itemId: "item1",
                     propertyKey: PropertyKeyType.positionRelative.name,
+                    propertyType: "Offset",
                     propertyValue: {"x": 1, "y": 2},
                     curve: "linear")
               ]
@@ -94,12 +100,14 @@ class _AnimationEditorPageState extends State<AnimationEditorPage>
                     time: 0.01,
                     itemId: "item1",
                     propertyKey: PropertyKeyType.positionRelative.name,
+                    propertyType: "Offset",
                     propertyValue: {"x": 1, "y": 2},
                     curve: "linear"),
                 Keyframe(
                     time: 3,
                     itemId: "item1",
                     propertyKey: PropertyKeyType.positionRelative.name,
+                    propertyType: "Offset",
                     propertyValue: {"x": 1, "y": 2},
                     curve: "linear")
               ]

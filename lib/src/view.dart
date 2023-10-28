@@ -1,8 +1,13 @@
+import 'dart:convert';
+
+import 'package:animation_editor/src/widgets/map_editor.dart';
+import 'package:animation_editor/src/widgets/track_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'controller.dart';
 import 'models.dart';
+
 import 'widgets/keyframe_row_leading.dart';
 import 'widgets/keyframes_row.dart';
 import 'widgets/timeline_track_view.dart';
@@ -37,21 +42,62 @@ class AnimationEditor extends StatelessWidget {
       builder: (context, child) {
         return Material(
           color: const Color.fromARGB(255, 0, 0, 0),
-          child: Column(
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
             children: [
-              // buildTopbar(),
-              Stack(
-                children: [buildTopbar(context), buildTopbarOverlay(context)],
-              ),
               Expanded(
-                child: SingleChildScrollView(
-                  child: Stack(
-                    children: [
-                      buildBody(),
-                    ],
-                  ),
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        buildTopbar(context),
+                        buildTopbarOverlay(context)
+                      ],
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Stack(
+                          children: [
+                            buildBody(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
+              if (controller.selectedKeyframes.isNotEmpty)
+                Container(
+                  width: 200,
+                  color: const Color.fromARGB(255, 41, 41, 41),
+                  child: ListenableBuilder(
+                      listenable: controller.keyframeUpdateNotifier,
+                      builder: (context, c) {
+                        if ((controller.selectedKeyframes.isEmpty))
+                          return const SizedBox();
+                        return Column(
+                          children: [
+                            Container(
+                              color: Colors.black,
+                              height: 45,
+                              alignment: Alignment.center,
+                              child: Text(
+                                controller.selectedKeyframes.last.itemId,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            MapEditor(
+                                key: Key(controller.selectedKeyframes.last.id!),
+                                onValueSubmit: (key, value, type) {
+                                  controller.editSelectedKeyframeValue(
+                                      key, value);
+                                },
+                                map: controller
+                                    .selectedKeyframes.last.propertyValue)
+                          ],
+                        );
+                      }),
+                )
             ],
           ),
         );
@@ -62,7 +108,6 @@ class AnimationEditor extends StatelessWidget {
   Widget buildBodyOverlay(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.max,
-      // crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(
           width: 200,
@@ -104,63 +149,37 @@ class AnimationEditor extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              for (final track in controller.timelineEntity.tracks.entries) ...[
-                TimelineTrackView(
-                    controller: controller,
-                    handleLineColor: handleLineColor,
-                    handleLineWidth: handleLineWidth,
-                    splitView: buildSpliter(context),
-                    onKeyframeMove: (key, details) {
-                      controller.onTrackKeyframesMove(
-                          track.value, key.time, details);
-                    },
-                    onToggle: () {
-                      controller.onCollapseTrackToggle(track.value);
-                    },
-                    track: track.value,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        for (final keyframes in track.value.keyframes.entries)
-                          SizedBox(
-                            height: keyframeRowHeight,
-                            child: Row(
-                              children: [
-                                KeyframeRowLeading(
-                                    width: controller.leftPanelWidth,
-                                    titleText: keyframes.key,
-                                    style: style,
-                                    child:
-                                        valueBuilder!.containsKey(keyframes.key)
-                                            ? valueBuilder![keyframes.key]!(
-                                                context,
-                                                controller.selectedKeyframes
-                                                        .isNotEmpty
-                                                    ? controller
-                                                        .selectedKeyframes.last
-                                                    : null)
-                                            : null),
-                                buildSpliter(context),
-                                Expanded(
-                                    child: KeyframesRow(
-                                  controller: controller,
-                                  // valueBuilder: valueBuilder,
-                                  handleLineColor: handleLineColor,
-                                  handleLineWidth: handleLineWidth,
-                                  onKeyframeMove: (frame, details) {
-                                    controller.onKeyframeMove(frame, details);
-                                  },
-                                  onKeyframeSelected: (keyframe) {
-                                    controller.onKeyframeSelect(keyframe);
-                                  },
-                                  keyframes: keyframes.value,
-                                ))
-                              ],
-                            ),
-                          )
-                      ],
-                    ))
-              ]
+              for (final track in controller.timelineEntity.tracks.entries)
+                TrackView(
+                  track: track.value,
+                  controller: controller,
+                  splitViewBuilder: (context) {
+                    return buildSpliter(context);
+                  },
+                  onExpand: () {
+                    controller.toggleTrack(track.value);
+                  },
+                  onKeyframeEnd: (key, details, keyframesKey) {
+                    controller.generateTrackAnimationMap(
+                        track.key, keyframesKey);
+                  },
+                  onKeyframeMove: (key, details) {
+                    controller.onKeyframeMove(key, details);
+                  },
+                  onKeyframeMoveHeader: (key, details) {
+                    controller.moveUnionKeyframes(
+                        track.value, key.time, details);
+                  },
+                  onKeyframeSelected: (key) {
+                    controller.onKeyframeSelect(key);
+                  },
+                  onKeyframeSelectedHeader: (key) {
+                    controller.onKeyframeSelect(key);
+                  },
+                  onKeyframeEndHeader: (key, details) {
+                    controller.onKeyframeSelect(key);
+                  },
+                )
             ],
           );
         });
