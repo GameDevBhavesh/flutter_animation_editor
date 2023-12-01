@@ -18,9 +18,7 @@ A flexible keyframe based animation editor in flutter which allows you to define
 5. change animation duration.
 6. more to come.
 
-All via a simple, unified API without fussing with AnimationController and
-StatefulWidget.
-
+All via a simple unified api
 ![Basic Animations](screenshots/1.png)
 <!-- ![Visual Effects](screenshots/2.png) -->
 
