@@ -55,3 +55,21 @@ extension AnimationControllerLoopExtensions on AnimationController {
     return tickerFuture;
   }
 }
+
+extension AnimHelp on Animation<dynamic>? {
+  T valueOrDefault<T>(T val) {
+    if (this != null) {
+      return this!.value!.runtimeType == int
+          ? this!.value.toDouble()
+          : this!.value as T;
+    }
+    return val;
+  }
+
+  double orDouble<double>(double val) {
+    if (this != null) {
+      return this!.value.toDouble();
+    }
+    return val;
+  }
+}

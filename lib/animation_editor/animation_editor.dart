@@ -1,33 +1,37 @@
 import 'dart:convert';
 
-import 'package:animation_editor/src/widgets/map_editor.dart';
-import 'package:animation_editor/src/widgets/track_view.dart';
+import 'package:animation_editor/animation_editor/controllers/object_track_controller.dart';
+import 'package:animation_editor/animation_editor/controllers/tracked_anim_controller.dart';
+import 'package:animation_editor/animation_editor/widgets/object_track_view.dart';
+// import 'package:animation_editor/src/widgets/map_editor.dart';
+// import 'package:animation_editor/src/widgets/track_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import 'controller.dart';
-import 'models.dart';
+import 'models/models.dart';
 
-import 'widgets/keyframe_row_leading.dart';
-import 'widgets/keyframes_row.dart';
-import 'widgets/timeline_track_view.dart';
+class ContextMenuOptions<OptionType, ControllerType> {
+  ContextMenuOptions({required this.onSelect, this.items});
+  final List<PopupMenuItem<OptionType>>? items;
+  final Function(ControllerType controller, OptionType option) onSelect;
+}
 
-class AnimationEditor extends StatelessWidget {
-  const AnimationEditor(
+class TrackedAnimationEditor extends StatelessWidget {
+  const TrackedAnimationEditor(
       {super.key,
       required this.controller,
       this.handleBuilder,
       this.handleLineWidth = .5,
       this.valueBuilder,
-      this.handleLineColor = Colors.white});
-  final AnimationEditorController controller;
-
+      this.handleLineColor = Colors.white,
+      required this.contextMenu});
+  final TrackedAnimationController controller;
+  final ContextMenuOptions<int, ObjectTrackController> contextMenu;
   final Widget Function(BuildContext context)? handleBuilder;
 
   final double handleLineWidth;
   final Color handleLineColor;
   static TextStyle style = const TextStyle(color: Colors.white);
-
   static double trackRowHeight = 100;
   static double keyframeRowHeight = 50;
 
@@ -66,38 +70,6 @@ class AnimationEditor extends StatelessWidget {
                   ],
                 ),
               ),
-              if (controller.selectedKeyframes.isNotEmpty)
-                Container(
-                  width: 200,
-                  color: const Color.fromARGB(255, 41, 41, 41),
-                  child: ListenableBuilder(
-                      listenable: controller.keyframeUpdateNotifier,
-                      builder: (context, c) {
-                        if ((controller.selectedKeyframes.isEmpty))
-                          return const SizedBox();
-                        return Column(
-                          children: [
-                            Container(
-                              color: Colors.black,
-                              height: 45,
-                              alignment: Alignment.center,
-                              child: Text(
-                                controller.selectedKeyframes.last.itemId,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            MapEditor(
-                                key: Key(controller.selectedKeyframes.last.id!),
-                                onValueSubmit: (key, value, type) {
-                                  controller.editSelectedKeyframeValue(
-                                      key, value);
-                                },
-                                map: controller
-                                    .selectedKeyframes.last.propertyValue)
-                          ],
-                        );
-                      }),
-                )
             ],
           ),
         );
@@ -127,7 +99,7 @@ class AnimationEditor extends StatelessWidget {
               },
               child: GestureDetector(
                   onHorizontalDragUpdate: (details) {
-                    controller.onTimeHandleDrag(details);
+                    controller.changePlayhead(details);
                   },
                   child: Container(
                     color: Colors.white.withOpacity(.3),
@@ -140,49 +112,31 @@ class AnimationEditor extends StatelessWidget {
   }
 
   Widget buildBody() {
-    return ListenableBuilder(
-        listenable: Listenable.merge(
-          [controller.keyframeUpdateNotifier, controller.animationController],
-        ),
-        builder: (context, c) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              for (final track in controller.timelineEntity.tracks.entries)
-                TrackView(
-                  track: track.value,
-                  controller: controller,
-                  splitViewBuilder: (context) {
-                    return buildSpliter(context);
-                  },
-                  onExpand: () {
-                    controller.toggleTrack(track.value);
-                  },
-                  onKeyframeEnd: (key, details, keyframesKey) {
-                    controller.generateTrackAnimationMap(
-                        track.key, keyframesKey);
-                  },
-                  onKeyframeMove: (key, details) {
-                    controller.onKeyframeMove(key, details);
-                  },
-                  onKeyframeMoveHeader: (key, details) {
-                    controller.moveUnionKeyframes(
-                        track.value, key.time, details);
-                  },
-                  onKeyframeSelected: (key) {
-                    controller.onKeyframeSelect(key);
-                  },
-                  onKeyframeSelectedHeader: (key) {
-                    controller.onKeyframeSelect(key);
-                  },
-                  onKeyframeEndHeader: (key, details) {
-                    controller.onKeyframeSelect(key);
-                  },
-                )
-            ],
-          );
-        });
+    return RepaintBoundary(
+      child: ListenableBuilder(
+          listenable: Listenable.merge(
+            [],
+          ),
+          builder: (context, c) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (final track
+                    in controller.trackedAnimation.objectTracks.entries)
+                  ObjectTrackView(
+                    onExpand: () {
+                      controller
+                          .readChildController(track.key)!
+                          .toggleCollapse();
+                    },
+                    splitViewBuilder: buildSpliter,
+                    controller: controller.readChildController(track.key)!,
+                  )
+              ],
+            );
+          }),
+    );
   }
 
   Widget buildSpliter(BuildContext context) {
@@ -208,8 +162,9 @@ class AnimationEditor extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           Container(
-            width: controller.leftPanelWidth,
+            width: controller.context.leftPanelWidth,
             color: const Color.fromARGB(0, 20, 20, 20),
+            constraints: const BoxConstraints(minWidth: 280),
             child: Row(
               children: [
                 IconButton(
@@ -217,14 +172,14 @@ class AnimationEditor extends StatelessWidget {
                       controller.playPause();
                     },
                     icon: Icon(
-                        controller.animationController.isAnimating
+                        controller.context.animationController.isAnimating
                             ? Icons.pause_sharp
                             : Icons.play_arrow_outlined,
                         size: 30,
                         color: Colors.white)),
                 DropdownButton<String>(
                     style: const TextStyle(color: Colors.white),
-                    value: controller.timelineEntity.playType,
+                    value: controller.playMode,
                     dropdownColor: const Color.fromARGB(255, 16, 16, 16),
                     items: const [
                       DropdownMenuItem<String>(
@@ -235,15 +190,16 @@ class AnimationEditor extends StatelessWidget {
                           value: "pingPong", child: Text("PingPong"))
                     ],
                     onChanged: (val) {
-                      controller.setPlayType(val!);
+                      controller.changePlaymode(val!);
                     }),
                 SizedBox(
                     width: 60,
                     child: TextField(
                       style: const TextStyle(color: Colors.white),
-                      controller: controller.timelineDurationTextController,
+                      controller: controller.durationTextController,
                       onSubmitted: (value) {
-                        controller.onTimelinDurationChange(value);
+                        controller.changeDuration(
+                            Duration(seconds: int.parse(value)));
                       },
                     ))
               ],
@@ -265,11 +221,11 @@ class AnimationEditor extends StatelessWidget {
                       )),
                   for (int i = 0;
                       i <=
-                          (controller.timelineEntity.duration.seconds * 100)
+                          (controller.trackedAnimation.duration.inSeconds * 100)
                               .toInt();
                       i++)
                     Positioned(
-                        left: i * controller.pixelPerSeconds,
+                        left: i * controller.context.pixelPerSeconds,
                         bottom: 0,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -299,8 +255,9 @@ class AnimationEditor extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
-          SizedBox(
-            width: controller.leftPanelWidth,
+          Container(
+            constraints: const BoxConstraints(minWidth: 280),
+            width: controller.context.leftPanelWidth,
           ),
           buildSpliter(context),
           Expanded(
@@ -311,25 +268,23 @@ class AnimationEditor extends StatelessWidget {
                   // Check if the scroll event is from a mouse device
                   double scrollDelta = event.scrollDelta.dy;
                   controller.onZoomScroll(scrollDelta);
-                  // Do something with the middle mouse button scroll value (scrollDelta)
                 }
               },
               child: GestureDetector(
                 onHorizontalDragUpdate: (details) {
-                  controller.onTimeHandleDrag(details);
+                  controller.changePlayhead(details);
                 },
                 child: Stack(
-                  // fit: StackFit.expand,
                   children: [
                     Positioned.fill(
                         child: Container(
                       color: Colors.white.withOpacity(0),
                     )),
                     ListenableBuilder(
-                        listenable: controller.animationController,
+                        listenable: controller.context.animationController,
                         builder: (context, _) {
                           return Positioned(
-                            left: controller.time * controller.pixelPerSeconds,
+                            left: controller.context.handlePos,
                             child: handleBuilder == null
                                 ? Container(
                                     color: Colors.white,
