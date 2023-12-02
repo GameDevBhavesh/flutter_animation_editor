@@ -1,18 +1,15 @@
-import 'dart:ui';
-
 import 'package:flutter/animation.dart';
-import 'package:flutter/widgets.dart';
-
-import '../controllers/property_track_controller.dart';
 import '../models/models.dart';
 import 'double_property.dart';
 import 'offset_property.dart';
+import 'color_property.dart';
 import 'property.dart';
 
 class Animator {
   static Map<Type, AnimationProperty> interpolators = {
     Offset: OffsetProperty(),
-    double: DoubleProperty()
+    double: DoubleProperty(),
+    Color: ColorProperty()
   };
   static T interpolate<T>(T a, T b, double t) {
     try {
@@ -25,7 +22,9 @@ class Animator {
 }
 
 main() {
-  Animator.interpolate<double>(1, 5, .5);
+  final val = Animator.interpolate(1.0, 1.0, .5);
+
+  print(val);
 }
 
 class DynamicTween<T> extends Animatable<T> {
