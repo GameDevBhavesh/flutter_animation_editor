@@ -147,3 +147,15 @@ class KeyframeSequence<T> extends Animatable<T> {
   @override
   String toString() => 'TweenSequence(${_items.length} items)';
 }
+
+// final Offset a = Offset(50, 50);
+// final Offset b = Offset(59, 59);
+
+// final double distance = 10;
+
+// bool check() {
+//   final dis = (b - a);
+//   final absDist = Offset(dis.dx.abs(), dis.dy.abs());
+
+
+// }

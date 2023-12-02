@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/widgets.dart';
 
 import '../animation/keyframe_sequence.dart';
@@ -17,6 +19,8 @@ class PropertyTrackController extends BaseController {
   final ChangeNotifier keyframesNotifer = ChangeNotifier();
   final ChangeNotifier onAnimationChange = ChangeNotifier();
   final Widget Function(PropertyTrackController contol)? inspectorBuilder;
+
+  // final AnimationProperty animationProperty;
 
   double snapToSecond(double a) {
     const double tolerance = 0.1; // Adjust this tolerance as needed

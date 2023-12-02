@@ -21,6 +21,7 @@ class TrackedAnimationEditor extends StatelessWidget {
       {super.key,
       required this.controller,
       this.handleBuilder,
+      this.tracksHeight = 35,
       this.handleLineWidth = .5,
       this.valueBuilder,
       this.handleLineColor = Colors.white,
@@ -32,10 +33,9 @@ class TrackedAnimationEditor extends StatelessWidget {
   final double handleLineWidth;
   final Color handleLineColor;
   static TextStyle style = const TextStyle(color: Colors.white);
-  static double trackRowHeight = 100;
-  static double keyframeRowHeight = 50;
 
   static double topbarHeight = 45;
+  final double tracksHeight;
   final Map<String, Widget Function(BuildContext context, Keyframe? keyframe)>?
       valueBuilder;
 
@@ -125,6 +125,7 @@ class TrackedAnimationEditor extends StatelessWidget {
                 for (final track
                     in controller.trackedAnimation.objectTracks.entries)
                   ObjectTrackView(
+                    height: tracksHeight,
                     onExpand: () {
                       controller
                           .readChildController(track.key)!

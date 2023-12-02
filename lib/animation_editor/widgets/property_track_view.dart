@@ -8,6 +8,7 @@ import 'keyframes_area_view.dart';
 class PropertyTrackView extends StatelessWidget {
   const PropertyTrackView(
       {super.key,
+      this.height = 35,
       required this.controller,
       this.splitViewBuilder,
       this.inspectorBuilder});
@@ -17,7 +18,7 @@ class PropertyTrackView extends StatelessWidget {
   final Widget Function(BuildContext context)? splitViewBuilder;
   final Widget Function(PropertyTrackController control)? inspectorBuilder;
 
-  static double height = 45;
+  final double height;
   static const Color backgroundColor = Color.fromARGB(255, 15, 15, 15);
   static const Color borderColor = Color.fromARGB(255, 122, 122, 122);
   static const TextStyle textStyle = TextStyle(color: Colors.white);
@@ -40,7 +41,7 @@ class PropertyTrackView extends StatelessWidget {
                   constraints: const BoxConstraints(minWidth: 280),
                   alignment: Alignment.center,
                   color: Color.fromARGB(255, 27, 27, 27).withOpacity(1),
-                  height: 45,
+                  // height: 45,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -86,6 +87,7 @@ class PropertyTrackView extends StatelessWidget {
                         listenable: controller.keyframesNotifer,
                         builder: (context, c) {
                           return KeyframeAreaView(
+                            height: height,
                             animatorContext: controller.context,
                             keyframes: controller.track.keyframes,
                             handleBuilder: (context) {

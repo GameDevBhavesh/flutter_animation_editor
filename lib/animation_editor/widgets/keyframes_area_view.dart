@@ -6,6 +6,7 @@ import '../models/models.dart';
 class KeyframeAreaView extends StatelessWidget {
   const KeyframeAreaView({
     super.key,
+    this.height = 35,
     required this.onKeyframeMove,
     this.onKeyframeMoveStart,
     this.onKeyframeMoveEnd,
@@ -32,7 +33,7 @@ class KeyframeAreaView extends StatelessWidget {
   //styling
   static const Color backgroundColor = Color.fromARGB(255, 15, 15, 15);
   static const Color borderColor = Color.fromARGB(86, 255, 255, 255);
-  static double height = 50;
+  final double height;
   @override
   Widget build(BuildContext context) {
     return RepaintBoundary(

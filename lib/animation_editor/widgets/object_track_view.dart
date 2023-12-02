@@ -13,6 +13,7 @@ class ObjectTrackView extends StatelessWidget {
       {super.key,
       required this.controller,
       this.onExpand,
+      this.height = 35,
       this.splitViewBuilder,
       this.inspectorBuilder});
 
@@ -23,7 +24,7 @@ class ObjectTrackView extends StatelessWidget {
   //final String headerTitleText
   final Function()? onExpand;
   final Widget Function(BuildContext context)? splitViewBuilder;
-  static double height = 45;
+  final double height;
   static const Color backgroundColor = Color.fromARGB(255, 15, 15, 15);
   static const Color borderColor = Color.fromARGB(255, 122, 122, 122);
   static const TextStyle textStyle = TextStyle(color: Colors.white);
@@ -38,6 +39,7 @@ class ObjectTrackView extends StatelessWidget {
       children: [
         for (final key in controller.objectTrack.tracks.keys)
           PropertyTrackView(
+            height: height,
             inspectorBuilder: controller.inpectorBuilders![
                 controller.objectTrack.tracks[key]!.dataType],
             controller: controller.readChildController(key)!,

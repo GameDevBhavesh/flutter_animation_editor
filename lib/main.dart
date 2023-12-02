@@ -7,6 +7,8 @@ import 'package:animation_editor/animation_editor/preset_widgets/container.dart'
 
 import 'package:flutter/material.dart';
 
+import 'animation_editor/preset_widgets/transform.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -135,10 +137,10 @@ class _AnimationEditorPageState extends State<AnimationEditorPage>
                               trackKey: 'width',
                               value: 300),
                         ]),
-                    "rotation": PropertyTrack(
+                    "transform:rot:z": PropertyTrack(
                         objectTrackKey: "item1",
-                        key: "rotation",
-                        name: "rotation",
+                        key: "transform:rot:z",
+                        name: "transform:rot:z",
                         group: "transfrom",
                         dataType: "double",
                         keyframes: [
@@ -146,13 +148,13 @@ class _AnimationEditorPageState extends State<AnimationEditorPage>
                               curve: const Cubic(.38, .13, .42, .32),
                               time: 0.01,
                               objectKey: 'item1',
-                              trackKey: 'rotation',
+                              trackKey: 'transform:rot:z',
                               value: 0),
                           Keyframe(
                               curve: const Cubic(0, 0, 1, 1),
                               time: 2,
                               objectKey: 'item1',
-                              trackKey: 'rotation',
+                              trackKey: 'transform:rot:z',
                               value: 6.283185307179586),
                         ]),
                   },
@@ -460,17 +462,13 @@ class _AnimationEditorPageState extends State<AnimationEditorPage>
                           TrackedWidget(
                             id: object.key,
                             builder: (context) {
-                              final track =
-                                  ControllerQuery.of<ObjectTrackController>(
-                                      context);
-                              track!.readChildController("x")!.getAnimation();
-
                               return Positioned(
                                 left: context.readAnim("x", 100.0),
                                 top: context.readAnim("y", 100.0),
-                                child: Transform.rotate(
-                                  angle: context.readAnim("angle", 0),
+                                child: KeyframedTransform(
+                                  rotationZ: 0,
                                   child: KeyframedContainer(
+                                    decoration: BoxDecoration(),
                                     height: 100,
                                     width: 200,
                                     color: Colors.red,
@@ -505,6 +503,7 @@ class _AnimationEditorPageState extends State<AnimationEditorPage>
             constraints: const BoxConstraints(minHeight: 200),
             height: height,
             child: TrackedAnimationEditor(
+              tracksHeight: 25,
               contextMenu: ContextMenuOptions(
                   items: [],
                   onSelect: (trackController, value) {

@@ -121,7 +121,15 @@ class KeyframedContainer extends StatelessWidget {
       color: context.readAnim("color", color),
       height: context.readAnim("height", height),
       width: context.readAnim("width", width),
-      alignment: context.readAnim("alignment", alignment),
+      transformAlignment: transformAlignment,
+      alignment: alignment,
+      transform: Matrix4.translationValues(
+          context.readAnim("trasnform:pos:x", 0),
+          context.readAnim("trasnform:pos:y", 0),
+          context.readAnim("trasnform:pos:z", 0))
+        ..rotateX(context.readAnim("trasnform:rot:x", 0))
+        ..rotateY(context.readAnim("trasnform:rot:y", 0))
+        ..rotateZ(context.readAnim("trasnform:rot:z", 0)),
       child: child,
     );
   }
