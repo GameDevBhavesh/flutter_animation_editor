@@ -1,9 +1,9 @@
 import 'dart:ui';
-
+import 'package:animation_editor/animation_editor/property_animators/animator.dart';
 import 'package:flutter/widgets.dart';
-
 import '../animation/keyframe_sequence.dart';
 import '../models/models.dart';
+import '../extentions/duration_extentions.dart';
 import '../state_magment/controller_query.dart';
 import 'tracked_anim_controller.dart';
 
@@ -36,9 +36,9 @@ class PropertyTrackController extends BaseController {
   }
 
   moveKeyframe(Keyframe keyframe, double delta) {
-    keyframe.time =
-        snapToSecond(keyframe.time + (delta / context.pixelPerSeconds))
-            .clamp(0, double.infinity);
+    keyframe.time = keyframe.time + delta / context.pixelPerSeconds;
+    // snapToSecond(keyframe.time + (delta / context.pixelPerSeconds))
+    //     .clamp(0, double.infinity);
     keyframesNotifer.notifyListeners();
   }
 
@@ -124,14 +124,8 @@ class PropertyTrackController extends BaseController {
 
   createAnimation() {
     shortByTime();
-    _animation = KeyframeSequence(
-            track.keyframes
-                .map((e) => KeyframeItem(
-                    time: e.time,
-                    value: e.value,
-                    curve: e.curve ?? Curves.linear))
-                .toList(),
-            context.animationController.duration!)
+    _animation = PropertyTrackSequenceAnimation(
+            track, context.animationController.duration!.toSeconds())
         .animate(context.animationController);
     onAnimationChange.notifyListeners();
   }

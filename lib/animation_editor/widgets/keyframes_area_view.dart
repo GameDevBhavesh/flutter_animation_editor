@@ -80,9 +80,6 @@ class KeyframeAreaView extends StatelessWidget {
         left: (keyframe.time * animatorContext.pixelPerSeconds) - 20 / 2,
         top: (height / 2) - (20 / 2),
         child: GestureDetector(
-          onHorizontalDragUpdate: (details) {
-            onKeyframeMove(keyframe, details);
-          },
           onHorizontalDragStart: (details) {
             if (onKeyframeMoveStart != null) {
               onKeyframeMoveStart!(keyframe, details);
@@ -91,12 +88,16 @@ class KeyframeAreaView extends StatelessWidget {
               onKeyframeSelected!(keyframe);
             }
           },
+          onHorizontalDragUpdate: (details) {
+            onKeyframeMove(keyframe, details);
+          },
           onHorizontalDragEnd: (details) {
             if (onKeyframeMoveEnd != null) {
               onKeyframeMoveEnd!(keyframe, details);
             }
           },
           onTap: () {
+            print("on tap keyframe");
             if (onKeyframeSelected != null) {
               onKeyframeSelected!(keyframe);
             }

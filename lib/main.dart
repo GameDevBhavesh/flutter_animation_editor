@@ -4,10 +4,9 @@
 
 import 'package:animation_editor/animation_editor.dart';
 import 'package:animation_editor/animation_editor/preset_widgets/container.dart';
+import 'package:animation_editor/animation_editor/preset_widgets/text.dart';
 
 import 'package:flutter/material.dart';
-
-import 'animation_editor/preset_widgets/transform.dart';
 
 void main() {
   runApp(const MyApp());
@@ -95,7 +94,7 @@ class _AnimationEditorPageState extends State<AnimationEditorPage>
                               time: 2,
                               objectKey: '',
                               trackKey: '',
-                              value: 350),
+                              value: 0),
                         ]),
                     "color": PropertyTrack(
                         objectTrackKey: "item1",
@@ -137,25 +136,110 @@ class _AnimationEditorPageState extends State<AnimationEditorPage>
                               trackKey: 'width',
                               value: 300),
                         ]),
-                    "transform:rot:z": PropertyTrack(
+                    "transform": PropertyTrack(
                         objectTrackKey: "item1",
-                        key: "transform:rot:z",
-                        name: "transform:rot:z",
+                        key: "transform",
+                        name: "transform",
                         group: "transfrom",
-                        dataType: "double",
+                        dataType: "matrix",
                         keyframes: [
-                          Keyframe(
+                          Keyframe<Matrix4>(
                               curve: const Cubic(.38, .13, .42, .32),
                               time: 0.01,
                               objectKey: 'item1',
-                              trackKey: 'transform:rot:z',
-                              value: 0),
-                          Keyframe(
+                              trackKey: 'transform',
+                              value: Matrix4.translationValues(0, 0, 0)
+                                ..rotateZ(0)),
+                          Keyframe<Matrix4>(
                               curve: const Cubic(0, 0, 1, 1),
                               time: 2,
                               objectKey: 'item1',
-                              trackKey: 'transform:rot:z',
-                              value: 6.283185307179586),
+                              trackKey: 'transform',
+                              value: Matrix4.translationValues(100, 100, 100)
+                                ..rotateZ(3)),
+                        ]),
+                    "opacity": PropertyTrack(
+                        objectTrackKey: "item1",
+                        key: "opacity",
+                        name: "opacity",
+                        group: "opacity",
+                        dataType: "double",
+                        keyframes: [
+                          Keyframe<double>(
+                              curve: const Cubic(.38, .13, .42, .32),
+                              time: 0.01,
+                              objectKey: 'item1',
+                              trackKey: 'opacity',
+                              value: 1.0),
+                          Keyframe<double>(
+                              curve: const Cubic(0, 0, 1, 1),
+                              time: 5,
+                              objectKey: 'item1',
+                              trackKey: 'opacity',
+                              value: 0.0),
+                        ]),
+                    "radius": PropertyTrack(
+                        objectTrackKey: "item1",
+                        key: "radius",
+                        name: "radius",
+                        group: "radius",
+                        dataType: "double",
+                        keyframes: [
+                          Keyframe<double>(
+                              curve: const Cubic(.38, .13, .42, .32),
+                              time: 0.01,
+                              objectKey: 'item1',
+                              trackKey: 'radius',
+                              value: 0),
+                          Keyframe<double>(
+                              curve: const Cubic(0, 0, 1, 1),
+                              time: 4.0,
+                              objectKey: 'item1',
+                              trackKey: 'radius',
+                              value: 100),
+                        ]),
+                    "percent": PropertyTrack(
+                        objectTrackKey: "item1",
+                        key: "percent",
+                        name: "percent",
+                        group: "percent",
+                        dataType: "double",
+                        keyframes: [
+                          Keyframe<double>(
+                              curve: const Cubic(.38, .13, .42, .32),
+                              time: 0.01,
+                              objectKey: 'item1',
+                              trackKey: 'percent',
+                              value: 0.0),
+                          Keyframe<double>(
+                              curve: const Cubic(0, 0, 1, 1),
+                              time: 4.0,
+                              objectKey: 'item1',
+                              trackKey: 'percent',
+                              value: 1.0),
+                        ]),
+                    "style": PropertyTrack(
+                        objectTrackKey: "item1",
+                        key: "style",
+                        name: "style",
+                        group: "style",
+                        dataType: "textStyle",
+                        keyframes: [
+                          Keyframe<TextStyle>(
+                              curve: const Cubic(.38, .13, .42, .32),
+                              time: 0.01,
+                              objectKey: 'item1',
+                              trackKey: 'style',
+                              value: TextStyle(
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  fontSize: 60)),
+                          Keyframe<TextStyle>(
+                              curve: const Cubic(0, 0, 1, 1),
+                              time: 4.0,
+                              objectKey: 'item1',
+                              trackKey: 'style',
+                              value:
+                                  TextStyle(color: Colors.cyan, fontSize: 20)),
                         ]),
                   },
                   isCollapsed: false),
@@ -367,6 +451,26 @@ class _AnimationEditorPageState extends State<AnimationEditorPage>
                               trackKey: 'rotation',
                               value: 6.283185307179586),
                         ]),
+                    "percent": PropertyTrack(
+                        objectTrackKey: "item3",
+                        key: "percent",
+                        name: "percent",
+                        group: "percent",
+                        dataType: "double",
+                        keyframes: [
+                          Keyframe<double>(
+                              curve: const Cubic(.38, .13, .42, .32),
+                              time: 0.01,
+                              objectKey: 'item3',
+                              trackKey: 'percent',
+                              value: 0.0),
+                          Keyframe<double>(
+                              curve: const Cubic(0, 0, 1, 1),
+                              time: 4.0,
+                              objectKey: 'item3',
+                              trackKey: 'percent',
+                              value: 1.0),
+                        ]),
                   },
                   isCollapsed: false),
             },
@@ -465,13 +569,18 @@ class _AnimationEditorPageState extends State<AnimationEditorPage>
                               return Positioned(
                                 left: context.readAnim("x", 100.0),
                                 top: context.readAnim("y", 100.0),
-                                child: KeyframedTransform(
-                                  rotationZ: 0,
+                                child: Opacity(
+                                  opacity: context.readAnim("opacity", 1),
                                   child: KeyframedContainer(
-                                    decoration: BoxDecoration(),
+                                    transformAlignment: Alignment.center,
+                                    alignment: Alignment.center,
                                     height: 100,
                                     width: 200,
                                     color: Colors.red,
+                                    child: KeyframedText(
+                                      "Hello welcome to keyfframe editor package",
+                                      percent: 1,
+                                    ),
                                   ),
                                 ),
                               );

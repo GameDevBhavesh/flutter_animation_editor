@@ -26,3 +26,41 @@ class DoubleProperty extends AnimationProperty<double> {
     return Text("${controller.track.name}: $value");
   }
 }
+
+class IntProperty extends AnimationProperty<int> {
+  @override
+  int lerp(int a, int b, double t) {
+    return lerpDouble(a.toDouble(), b.toDouble(), t)!.toInt();
+  }
+
+  @override
+  int fromJson(json) => json.toInt();
+
+  @override
+  dynamic toJson(int value) => value;
+
+  @override
+  Widget buildInpector(
+      BuildContext context, num value, PropertyTrackController controller) {
+    return Text("${controller.track.name}: $value");
+  }
+}
+
+class NumProperty extends AnimationProperty<num> {
+  @override
+  num lerp(num a, num b, double t) {
+    return lerpDouble(a.toDouble(), b.toDouble(), t)!.toDouble();
+  }
+
+  @override
+  num fromJson(json) => json.toInt();
+
+  @override
+  dynamic toJson(num value) => value;
+
+  @override
+  Widget buildInpector(
+      BuildContext context, num value, PropertyTrackController controller) {
+    return Text("${controller.track.name}: $value");
+  }
+}

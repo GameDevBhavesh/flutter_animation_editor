@@ -1,4 +1,5 @@
 import 'package:animation_editor/animation_editor.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class KeyframedContainer extends StatelessWidget {
@@ -118,18 +119,19 @@ class KeyframedContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: context.readAnim("color", color),
+      // color: decoration != null ? null : context.readAnim("color", color),
       height: context.readAnim("height", height),
       width: context.readAnim("width", width),
       transformAlignment: transformAlignment,
+      decoration: BoxDecoration(
+          color: context.readAnim("color", color),
+          gradient: LinearGradient(colors: [
+            Colors.white,
+            context.readAnim("color", color!),
+          ]),
+          borderRadius: BorderRadius.circular(context.readAnim("radius", 0))),
       alignment: alignment,
-      transform: Matrix4.translationValues(
-          context.readAnim("trasnform:pos:x", 0),
-          context.readAnim("trasnform:pos:y", 0),
-          context.readAnim("trasnform:pos:z", 0))
-        ..rotateX(context.readAnim("trasnform:rot:x", 0))
-        ..rotateY(context.readAnim("trasnform:rot:y", 0))
-        ..rotateZ(context.readAnim("trasnform:rot:z", 0)),
+      transform: context.readAnim("transform", transform),
       child: child,
     );
   }

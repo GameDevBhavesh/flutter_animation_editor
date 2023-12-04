@@ -97,7 +97,7 @@ class PropertyTrackView extends StatelessWidget {
                                   height: MediaQuery.of(context).size.height);
                             },
                             onKeyframeMove: (frame, details) {
-                              controller.moveKeyframe(frame, details.delta.dx);
+                              controller.moveKeyframe(frame, details.delta.dx!);
                             },
                             onKeyframeSelected: (keyframe) {
                               controller.selectKeyframe(keyframe);

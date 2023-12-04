@@ -1,4 +1,11 @@
+import 'dart:ffi';
+
+import 'package:animation_editor/animation_editor/property_animators/bool_property.dart';
+import 'package:animation_editor/animation_editor/property_animators/matrix4_property.dart';
+import 'package:animation_editor/animation_editor/property_animators/text_style_property.dart';
 import 'package:flutter/animation.dart';
+import 'package:flutter/widgets.dart' as wid;
+import 'package:vector_math/vector_math_64.dart';
 import '../models/models.dart';
 import 'double_property.dart';
 import 'offset_property.dart';
@@ -7,9 +14,13 @@ import 'property.dart';
 
 class Animator {
   static Map<Type, AnimationProperty> interpolators = {
+    int: NumProperty(),
+    double: NumProperty(),
     Offset: OffsetProperty(),
-    double: DoubleProperty(),
-    Color: ColorProperty()
+    Color: ColorProperty(),
+    Matrix4: Matrix4Property(),
+    wid.TextStyle: TextStyleProperty(),
+    Bool: BoolProperty()
   };
   static T interpolate<T>(T a, T b, double t) {
     try {
@@ -22,9 +33,10 @@ class Animator {
 }
 
 main() {
-  final val = Animator.interpolate(1.0, 1.0, .5);
+  final val = Animator.interpolate(Matrix4.translationValues(0, 0, 0),
+      Matrix4.translationValues(10, 10, 10), .5);
 
-  print(val);
+  print(val.getTranslation().toString());
 }
 
 class DynamicTween<T> extends Animatable<T> {
@@ -55,12 +67,12 @@ class PropertyTrackSequenceAnimation<T> extends Animatable<T> {
       throw StateError(
           'No lerper found for type ${trackType.toString()} please pass mapped list of lerpers which containes lerper for type :${trackType.toString()}');
     }
-    maxTime = track.keyframes[framesCount].time;
+    maxTime = track.keyframes[framesCount - 1].time;
     minTime = track.keyframes[0].time;
 
     for (var i = 0; i < framesCount; i++) {
       final frame = track.keyframes[i];
-      if (i == framesCount) {
+      if (i == framesCount - 1) {
         //compansate for max keyframe from max seconds value
         _intervals
             .add(_Interval(maxTime / maxSeconds, maxSeconds / maxSeconds));
@@ -77,7 +89,7 @@ class PropertyTrackSequenceAnimation<T> extends Animatable<T> {
         final nextFrame = track.keyframes[i + 1];
         _intervals.add(
             _Interval(frame.time / maxSeconds, nextFrame.time / maxSeconds));
-        _tweens.add(DynamicTween(frame.value, nextFrame,
+        _tweens.add(DynamicTween(frame.value, nextFrame.value,
             frame.curve ?? Curves.linear, customAnimators[trackType]!.lerp));
       }
     }
