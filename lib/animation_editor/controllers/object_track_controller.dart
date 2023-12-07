@@ -27,7 +27,7 @@ class ObjectTrackController extends BaseController
   final ObjectTrack objectTrack;
   final String key;
 
-  final List<Keyframe> unionKeyframes = [];
+  final List<Keyframe> multipleKeyframes = [];
 
   Animation? getAnimation<J>(String key) {
     if (hasChildController(key)) {
@@ -58,7 +58,17 @@ class ObjectTrackController extends BaseController
     notifyListeners();
   }
 
-  addPropertyTrack(String key, String name, String dataType, {String? group}) {
+  List<Keyframe<dynamic>> createAllKeyframesUnion() {
+    final List<Keyframe> res = [];
+
+    for (var propertyTrack in objectTrack.tracks.values) {
+      res.addAll(propertyTrack.keyframes);
+    }
+
+    return res.union((element) => element.time);
+  }
+
+  addPropertyTrack(String key, String name, Type dataType, {String? group}) {
     final inspector = inpectorBuilders![key];
     final pTrack = objectTrack.tracks.putIfAbsent(
         key,
@@ -82,26 +92,29 @@ class ObjectTrackController extends BaseController
     notifyListeners();
   }
 
-  moveAllKeyframesStart(double time, double delta) {
-    unionKeyframes.clear();
+  moveAllKeyframesStart(double time) {
+    multipleKeyframes.clear();
     for (var propertyTrack in objectTrack.tracks.values) {
-      final matched = propertyTrack.keyframes.union((element) => element.time);
-      unionKeyframes.addAll(matched);
+      for (var frame in propertyTrack.keyframes) {
+        if (frame.time == time) {
+          multipleKeyframes.add(frame);
+        }
+      }
     }
   }
 
   moveAllKeyframesUpdate(double time, double delta) {
-    for (var keyframe in unionKeyframes) {
-      keyframe.time =
-          snapToSecond(keyframe.time + (delta / context.pixelPerSeconds))
-              .clamp(0, double.infinity);
+    for (var keyframe in multipleKeyframes) {
+      keyframe.time = keyframe.time + (delta / context.pixelPerSeconds);
     }
+    notifyListeners();
   }
 
-  movedAllKeyframes() {
+  moveAllKeyframesEnd() {
     for (var propertyTrackKey in objectTrack.tracks.keys) {
       readChildController(propertyTrackKey)?.createAnimation();
     }
+    multipleKeyframes.clear();
   }
 
   selectKeyframe(Keyframe keyframe) {

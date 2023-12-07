@@ -7,7 +7,7 @@ class KeyframeAreaView extends StatelessWidget {
   const KeyframeAreaView({
     super.key,
     this.height = 35,
-    required this.onKeyframeMove,
+    required this.onKeyframeMoveUpdate,
     this.onKeyframeMoveStart,
     this.onKeyframeMoveEnd,
     this.onKeyframeSelected,
@@ -18,7 +18,8 @@ class KeyframeAreaView extends StatelessWidget {
   });
 
   //params
-  final Function(Keyframe keyframe, DragUpdateDetails details) onKeyframeMove;
+  final Function(Keyframe keyframe, DragUpdateDetails details)
+      onKeyframeMoveUpdate;
   final Function(Keyframe keyframe, DragStartDetails details)?
       onKeyframeMoveStart;
   final Function(Keyframe keyframe, DragEndDetails details)? onKeyframeMoveEnd;
@@ -89,7 +90,7 @@ class KeyframeAreaView extends StatelessWidget {
             }
           },
           onHorizontalDragUpdate: (details) {
-            onKeyframeMove(keyframe, details);
+            onKeyframeMoveUpdate(keyframe, details);
           },
           onHorizontalDragEnd: (details) {
             if (onKeyframeMoveEnd != null) {

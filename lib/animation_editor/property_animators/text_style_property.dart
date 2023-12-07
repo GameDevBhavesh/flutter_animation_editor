@@ -5,6 +5,8 @@ import '../controllers/property_track_controller.dart';
 import 'property.dart';
 
 class TextStyleProperty extends AnimationProperty<TextStyle> {
+  const TextStyleProperty();
+
   @override
   TextStyle lerp(TextStyle a, TextStyle b, double t) {
     if (t == 0) {
@@ -52,20 +54,21 @@ class TextStyleProperty extends AnimationProperty<TextStyle> {
     return {
       'fontFamily': value.fontFamily,
       'fontSize': value.fontSize,
-      'color': value.color!.value,
-      'fontWeight': value.fontWeight!.index,
+      'color': value.color?.value,
+      'fontWeight': value.fontWeight?.index,
       'fontStyle': value.fontStyle,
       'letterSpacing': value.letterSpacing,
       'wordSpacing': value.wordSpacing,
       'decoration': value.decoration,
-      'decorationColor': value.decorationColor!.value,
-      'decorationStyle': value.decorationStyle!.index,
+      'decorationColor': value.decorationColor?.value,
+      'decorationStyle': value.decorationStyle?.index,
     };
   }
 
   @override
   Widget buildInpector(BuildContext context, TextStyle value,
       PropertyTrackController controller) {
-    return Text("x:${value}");
+    final val = (controller.getAnimation()!.value as TextStyle);
+    return Text("Hello");
   }
 }

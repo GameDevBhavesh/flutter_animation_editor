@@ -46,31 +46,34 @@ class TrackedAnimationEditor extends StatelessWidget {
       builder: (context, child) {
         return Material(
           color: const Color.fromARGB(255, 0, 0, 0),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    Stack(
-                      children: [
-                        buildTopbar(context),
-                        buildTopbarOverlay(context)
-                      ],
-                    ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Stack(
-                          children: [
-                            buildBody(),
-                          ],
+          child: SelectionArea(
+            selectionControls: MaterialTextSelectionControls(),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      Stack(
+                        children: [
+                          buildTopbar(context),
+                          buildTopbarOverlay(context)
+                        ],
+                      ),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Stack(
+                            children: [
+                              buildBody(),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -167,6 +170,7 @@ class TrackedAnimationEditor extends StatelessWidget {
             color: const Color.fromARGB(0, 20, 20, 20),
             constraints: const BoxConstraints(minWidth: 280),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
                     onPressed: () {
@@ -196,6 +200,7 @@ class TrackedAnimationEditor extends StatelessWidget {
                 SizedBox(
                     width: 60,
                     child: TextField(
+                      textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.white),
                       controller: controller.durationTextController,
                       onSubmitted: (value) {
@@ -209,9 +214,7 @@ class TrackedAnimationEditor extends StatelessWidget {
           buildSpliter(context),
           Expanded(
             child: SizedBox(
-              // height: 30,
               child: Stack(
-                // fit: StackFit.expand,
                 children: [
                   Positioned(
                       bottom: 0,

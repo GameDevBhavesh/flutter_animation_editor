@@ -13,7 +13,7 @@ import 'color_property.dart';
 import 'property.dart';
 
 class Animator {
-  static Map<Type, AnimationProperty> interpolators = {
+  static const Map<Type, AnimationProperty> interpolators = {
     int: NumProperty(),
     double: NumProperty(),
     Offset: OffsetProperty(),
@@ -98,7 +98,9 @@ class PropertyTrackSequenceAnimation<T> extends Animatable<T> {
   T _evaluateAt(double t, int index) {
     final DynamicTween element = _tweens[index];
     final double tInterval = _intervals[index].value(t);
-    final value = element.transform(tInterval);
+
+    // print("${tInterval} value");
+    final value = element.transform(tInterval.clamp(0, 1));
     return value;
   }
 
@@ -130,7 +132,7 @@ class _Interval {
   bool contains(double t) => t >= start && t < end;
 
   double value(double t) {
-    return (t - start) / (end - start);
+    return (t - start) / (end - start).clamp(0, 1);
   }
 
   @override

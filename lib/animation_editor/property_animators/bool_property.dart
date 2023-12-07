@@ -7,6 +7,7 @@ import 'animator.dart';
 import 'property.dart';
 
 class BoolProperty extends AnimationProperty<bool> {
+  const BoolProperty();
   @override
   bool lerp(bool a, bool b, double t) {
     if (t == 1) {

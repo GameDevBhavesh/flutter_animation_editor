@@ -1,3 +1,4 @@
+import 'package:animation_editor/animation_editor/property_animators/animator.dart';
 import 'package:flutter/material.dart';
 
 import '../controllers/object_track_controller.dart';
@@ -5,7 +6,7 @@ import '../controllers/property_track_controller.dart';
 import '../models/models.dart';
 import 'keyframes_area_view.dart';
 
-class PropertyTrackView extends StatelessWidget {
+class PropertyTrackView extends StatefulWidget {
   const PropertyTrackView(
       {super.key,
       this.height = 35,
@@ -28,16 +29,35 @@ class PropertyTrackView extends StatelessWidget {
   static const double handleWidth = 2;
 
   @override
+  State<PropertyTrackView> createState() => _PropertyTrackViewState();
+}
+
+class _PropertyTrackViewState extends State<PropertyTrackView> {
+  Widget Function(
+    BuildContext context,
+    dynamic value,
+    PropertyTrackController controller,
+  )? inspector;
+  @override
+  void initState() {
+    inspector =
+        Animator.interpolators[widget.controller.track.dataType]!.buildInpector;
+    print(
+        "${widget.controller.track.name}, ${inspector != null ? true : false}");
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-        listenable: controller,
+        listenable: widget.controller,
         builder: (context, c) {
           return SizedBox(
-            height: height,
+            height: widget.height,
             child: Row(
               children: [
                 Container(
-                  width: controller.context.leftPanelWidth,
+                  width: widget.controller.context.leftPanelWidth,
                   constraints: const BoxConstraints(minWidth: 280),
                   alignment: Alignment.center,
                   color: Color.fromARGB(255, 27, 27, 27).withOpacity(1),
@@ -48,17 +68,21 @@ class PropertyTrackView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 30, right: 30),
                         child: Text(
-                          controller.track.name,
-                          style: textStyle,
+                          widget.controller.track.name,
+                          style: PropertyTrackView.textStyle,
                         ),
                       ),
-                      // const SizedBox(width: 10),
-                      if (inspectorBuilder != null)
-                        Expanded(child: inspectorBuilder!(controller)),
+                      if (inspector != null)
+                        // Expanded(child: Container(color: Colors.black87,)),
+                        Expanded(
+                            child: inspector!(
+                                context,
+                                widget.controller.getAnimation()!.value,
+                                widget.controller)),
                       const SizedBox(width: 20),
                       GestureDetector(
                         onTap: () {
-                          controller.addRemoveCurrentKeyframe();
+                          widget.controller.addRemoveCurrentKeyframe();
                         },
                         child: MouseRegion(
                           cursor: SystemMouseCursors.click,
@@ -81,29 +105,31 @@ class PropertyTrackView extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (splitViewBuilder != null) splitViewBuilder!(context),
+                if (widget.splitViewBuilder != null)
+                  widget.splitViewBuilder!(context),
                 Expanded(
                     child: ListenableBuilder(
-                        listenable: controller.keyframesNotifer,
+                        listenable: widget.controller.keyframesNotifer,
                         builder: (context, c) {
                           return KeyframeAreaView(
-                            height: height,
-                            animatorContext: controller.context,
-                            keyframes: controller.track.keyframes,
+                            height: widget.height,
+                            animatorContext: widget.controller.context,
+                            keyframes: widget.controller.track.keyframes,
                             handleBuilder: (context) {
                               return Container(
-                                  color: handleColor,
-                                  width: handleWidth,
+                                  color: PropertyTrackView.handleColor,
+                                  width: PropertyTrackView.handleWidth,
                                   height: MediaQuery.of(context).size.height);
                             },
-                            onKeyframeMove: (frame, details) {
-                              controller.moveKeyframe(frame, details.delta.dx!);
+                            onKeyframeMoveUpdate: (frame, details) {
+                              widget.controller
+                                  .moveKeyframe(frame, details.delta.dx!);
                             },
                             onKeyframeSelected: (keyframe) {
-                              controller.selectKeyframe(keyframe);
+                              widget.controller.selectKeyframe(keyframe);
                             },
                             onKeyframeMoveEnd: (keyframe, details) {
-                              controller.movedKeyframe(keyframe);
+                              widget.controller.movedKeyframe(keyframe);
                             },
                           );
                         }))

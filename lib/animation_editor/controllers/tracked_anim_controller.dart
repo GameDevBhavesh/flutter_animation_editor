@@ -7,7 +7,8 @@ import 'package:animation_editor/animation_editor/widgets/property_track_view.da
 import 'package:animation_editor/animation_editor/extentions/anim_extention.dart';
 import 'package:animation_editor/animation_editor/extentions/list_extentions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
+import '../property_animators/double_property.dart';
 import '../state_magment/controller_manager_mixin.dart';
 import '../models/models.dart';
 import 'object_track_controller.dart';
@@ -217,16 +218,16 @@ class TrackedAnimationController extends BaseController
     keyframe.time =
         snapToSecond(keyframe.time + (delta / context.pixelPerSeconds))
             .clamp(0, double.infinity);
-    // keyframeUpdateNotifier.notifyListeners();
   }
 
   onKeyframeSelect(Keyframe key) {
     if (!context.multiSelect) selectedKeyframes.clear();
     selectedKeyframes.add(key);
-    // keyframeUpdateNotifier.notifyListeners();
   }
 
-  exportJson() {}
+  exportJson() {
+    return trackedAnimation.toJson();
+  }
 
   @override
   void dispose() {
@@ -339,63 +340,5 @@ class AnimationEditorConfiguration {
         return DoubleInspector(controller: controller);
       }
     });
-  }
-}
-
-class DoubleInspector extends StatefulWidget {
-  const DoubleInspector({super.key, required this.controller});
-  final PropertyTrackController controller;
-  @override
-  State<DoubleInspector> createState() => _DoubleInspectorState();
-}
-
-class _DoubleInspectorState extends State<DoubleInspector> {
-  late TextEditingController textController = TextEditingController(text: "0");
-  Animation<dynamic>? anim;
-  @override
-  void initState() {
-    updateAnim();
-    widget.controller.onAnimationChange.addListener(updateAnim);
-    super.initState();
-  }
-
-  updateAnim() async {
-    setState(() {
-      anim = widget.controller.getAnimation();
-    });
-    anim!.addListener(onAnimation);
-  }
-
-  onAnimation() {
-    textController.text = (anim!.value as num).toStringAsFixed(2).toString();
-    final keyed = widget.controller.hasKeyframeOnTime();
-    if (mounted) setState(() {});
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (anim == null) return const SizedBox();
-    final keyed = widget.controller.hasKeyframeOnTime();
-    return SizedBox(
-      width: 200,
-      child: TextField(
-        style: TextStyle(
-            color: keyed != null
-                ? Color.fromARGB(255, 0, 179, 211)
-                : Colors.white),
-        textAlign: TextAlign.center,
-        controller: textController,
-        onSubmitted: (value) {
-          widget.controller.addCurrentKeyframe(value: double.parse(value));
-        },
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    widget.controller.onAnimationChange.removeListener(updateAnim);
-    anim!.removeListener(onAnimation);
-    super.dispose();
   }
 }

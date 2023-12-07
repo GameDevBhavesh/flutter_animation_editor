@@ -17,7 +17,7 @@ class ObjectTrackView extends StatelessWidget {
       this.splitViewBuilder,
       this.inspectorBuilder});
 
-  // final AnimationEditorController controller;
+  //final AnimationEditorController controller
   final ObjectTrackController controller;
   final Widget Function(BuildContext context)? inspectorBuilder;
 
@@ -100,7 +100,7 @@ class ObjectTrackView extends StatelessWidget {
             Expanded(
               child: KeyframeAreaView(
                 keyframes: (controller.objectTrack.isCollapsed)
-                    ? getUnionKeyframes()
+                    ? controller.createAllKeyframesUnion()
                     : null,
                 animatorContext: controller.context,
                 handleBuilder: (context) {
@@ -109,12 +109,15 @@ class ObjectTrackView extends StatelessWidget {
                       width: handleWidth,
                       height: MediaQuery.of(context).size.height);
                 },
-                onKeyframeMove: (keyframe, details) {
+                onKeyframeMoveStart: (keyframe, details) {
+                  controller.moveAllKeyframesStart(keyframe.time);
+                },
+                onKeyframeMoveUpdate: (keyframe, details) {
                   controller.moveAllKeyframesUpdate(
                       keyframe.time, details.delta.dx);
                 },
                 onKeyframeMoveEnd: (keyframe, details) {
-                  controller.movedAllKeyframes();
+                  controller.moveAllKeyframesEnd();
                 },
                 onKeyframeSelected: (keyframe) {
                   controller.selectKeyframe(keyframe);

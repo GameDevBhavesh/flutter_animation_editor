@@ -51,7 +51,7 @@ class PropertyTrackController extends BaseController {
     notifyListeners();
   }
 
-  addRemoveCurrentKeyframe({dynamic? value}) {
+  addRemoveCurrentKeyframe({dynamic? value, Type? dataType}) {
     for (var element in track.keyframes) {
       if (element.time == context.time) {
         removeKeyframe(element);
@@ -61,7 +61,7 @@ class PropertyTrackController extends BaseController {
     addCurrentKeyframe();
   }
 
-  addCurrentKeyframe({dynamic? value}) {
+  addCurrentKeyframe({dynamic? value, Type? dataType}) {
     final anim = getAnimation();
     if (anim != null) {
       addKeyframe(Keyframe(

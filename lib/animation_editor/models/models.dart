@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:animation_editor/animation_editor/property_animators/animator.dart';
 import 'package:flutter/widgets.dart';
 
 class AnimationsCollection {
@@ -61,6 +64,7 @@ class TrackedAnimation {
 
 class ObjectTrack {
   final String name;
+
   final Map<String, PropertyTrack> tracks;
   bool isCollapsed;
   ObjectTrack({
@@ -94,59 +98,79 @@ class ObjectTrack {
       };
 }
 
-class PropertyTrack {
+class PropertyTrack<T> {
   final String name;
   final String objectTrackKey;
   final String key;
   final String group;
-  final String dataType;
+  Type dataType;
 
-  final List<Keyframe> keyframes;
+  final List<Keyframe<T>> keyframes;
 
-  PropertyTrack({
-    required this.name,
-    required this.group,
-    required this.key,
-    required this.objectTrackKey,
-    required this.dataType,
-    required this.keyframes,
-  });
+  PropertyTrack(
+      {required this.name,
+      required this.group,
+      required this.key,
+      required this.objectTrackKey,
+      required this.keyframes,
+      required this.dataType}) {
+    keyframes.forEach((element) {
+      element.dataType = dataType;
+    });
+  }
 
   PropertyTrack copyWith({
     String? name,
     String? group,
     String? key,
     String? objectTrackKey,
-    String? dataType,
+    Type? dataType,
     List<Keyframe>? keyframes,
   }) =>
       PropertyTrack(
+        dataType: dataType ?? this.dataType,
         name: name ?? this.name,
         group: group ?? this.group,
         key: key ?? this.key,
         objectTrackKey: objectTrackKey ?? this.objectTrackKey,
-        dataType: dataType ?? this.dataType,
         keyframes: keyframes ?? this.keyframes,
       );
 
-  factory PropertyTrack.fromJson(Map<String, dynamic> json) => PropertyTrack(
-        name: json["name"],
-        group: json["group"],
-        objectTrackKey: json["objectTrackKey"],
-        key: json["key"],
-        dataType: json["dataType"],
-        keyframes: List<Keyframe>.from(
-            json["keyframes"].map((x) => Keyframe.fromJson(x))),
-      );
+  factory PropertyTrack.fromJson(Map<String, dynamic> json) {
+    Type? type;
 
-  Map<String, dynamic> toJson() => {
-        "name": name,
-        "group": group,
-        "objectTrackKey": objectTrackKey,
-        "key": key,
-        "dataType": dataType,
-        "keyframes": List<dynamic>.from(keyframes.map((x) => x.toJson())),
-      };
+    for (var element in Animator.interpolators.entries) {
+      if (element.key.toString() == json["dataType"] as String) {
+        type = element.key;
+        break;
+      }
+    }
+    if (type == null) {
+      throw FlutterError(
+          "Incoming dataType for PopertyTrack isn't defined in animators parameters");
+    }
+
+    return PropertyTrack(
+      name: json["name"],
+      group: json["group"],
+      objectTrackKey: json["objectTrackKey"],
+      key: json["key"],
+      dataType: type,
+      keyframes: List<Keyframe<T>>.from(json["keyframes"]
+          .map((x) => Keyframe<T>.fromJson(x)..dataType = type)),
+    );
+  }
+  Map<String, dynamic> toJson() {
+    print(dataType.toString());
+    return {
+      "name": name,
+      "group": group,
+      "objectTrackKey": objectTrackKey,
+      "key": key,
+      "dataType": dataType.toString(),
+      "keyframes": List<dynamic>.from(keyframes.map((x) => x.toJson())),
+    };
+  }
 }
 
 class KeyframeCurve {
@@ -180,9 +204,11 @@ class Keyframe<T> {
   Cubic? curve;
   final String trackKey;
   final String objectKey;
+  Type? dataType;
 
   Keyframe(
-      {required this.curve,
+      {this.dataType,
+      required this.curve,
       required this.time,
       required this.value,
       required this.objectKey,
@@ -195,7 +221,7 @@ class Keyframe<T> {
 
   Keyframe copyWith({
     double? time,
-    Map<String, dynamic>? value,
+    dynamic value,
     String? trackKey,
     Cubic? curve,
     String? objectKey,
@@ -209,26 +235,28 @@ class Keyframe<T> {
 
   factory Keyframe.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      Keyframe(
-        curve: Cubic(
-            json["curve"]["a"].toDouble(),
-            json["curve"]["b"].toDouble(),
-            json["curve"]["c"].toDouble(),
-            json["curve"]["d"].toDouble()),
-        time: json["time"]?.toDouble(),
-        value: json["value"],
-        objectKey: json["objectKey"],
-        trackKey: json["trackKey"],
-      );
+  ) {
+    return Keyframe(
+      curve: Cubic(json["curve"]["a"].toDouble(), json["curve"]["b"].toDouble(),
+          json["curve"]["c"].toDouble(), json["curve"]["d"].toDouble()),
+      time: json["time"]?.toDouble(),
+      value: json["value"],
+      objectKey: json["objectKey"],
+      trackKey: json["trackKey"],
+    );
+  }
 
-  Map<String, dynamic> toJson() => {
-        "time": time,
-        "value": value,
-        "curve": {"a": curve!.a, "b": curve!.b, "c": curve!.c, "d": curve!.d},
-        "objectKey": objectKey,
-        "trackKey": trackKey,
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      "time": time,
+      "value": Animator.interpolators[dataType]!.toJson(value),
+      "curve": {"a": curve!.a, "b": curve!.b, "c": curve!.c, "d": curve!.d},
+      "dataType": dataType.toString(),
+      "objectKey": objectKey,
+      "trackKey": trackKey,
+    };
+  }
+
   @override
   int get hashCode => super.hashCode;
 }
