@@ -74,6 +74,17 @@ class TrackedAnimationController extends BaseController
   String playMode = "oneShot";
   final List<Keyframe> selectedKeyframes = [];
 
+  bool animate = true;
+  setAnimate(bool val) {
+    animate = val;
+    readChildControllers().forEach(
+      (element) {
+        element.setAnimate(animate);
+      },
+    );
+    notifyListeners();
+  }
+
   initAnimatorEvents() {
     context.animationController.addListener(() {
       context.time = (context.animationController.duration!.inSeconds *
@@ -170,7 +181,7 @@ class TrackedAnimationController extends BaseController
 
   deleteObjectTrack(String key) {
     trackedAnimation.objectTracks.remove(key);
-    deleteController(key);
+    deleteChildController(key);
     notifyListeners();
   }
 
@@ -232,7 +243,7 @@ class TrackedAnimationController extends BaseController
   @override
   void dispose() {
     context.animationController.dispose();
-    disposeControllers();
+    disposeChildControllers();
     super.dispose();
   }
 

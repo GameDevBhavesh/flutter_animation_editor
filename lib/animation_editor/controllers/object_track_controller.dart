@@ -29,6 +29,17 @@ class ObjectTrackController extends BaseController
 
   final List<Keyframe> multipleKeyframes = [];
 
+  bool animate = true;
+  setAnimate(bool val) {
+    animate = val;
+    readChildControllers().forEach(
+      (element) {
+        element.setAnimate(animate);
+      },
+    );
+    notifyListeners();
+  }
+
   Animation? getAnimation<J>(String key) {
     if (hasChildController(key)) {
       return readChildController(key)!.getAnimation();
@@ -88,7 +99,7 @@ class ObjectTrackController extends BaseController
 
   deletePropertyTrack(String key) {
     objectTrack.tracks.remove(key);
-    deleteController(key);
+    deleteChildController(key);
     notifyListeners();
   }
 

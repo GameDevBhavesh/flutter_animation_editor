@@ -35,7 +35,6 @@ class PropertyTrackView extends StatefulWidget {
 class _PropertyTrackViewState extends State<PropertyTrackView> {
   Widget Function(
     BuildContext context,
-    dynamic value,
     PropertyTrackController controller,
   )? inspector;
   @override
@@ -74,11 +73,7 @@ class _PropertyTrackViewState extends State<PropertyTrackView> {
                       ),
                       if (inspector != null)
                         // Expanded(child: Container(color: Colors.black87,)),
-                        Expanded(
-                            child: inspector!(
-                                context,
-                                widget.controller.getAnimation()!.value,
-                                widget.controller)),
+                        Expanded(child: inspector!(context, widget.controller)),
                       const SizedBox(width: 20),
                       GestureDetector(
                         onTap: () {

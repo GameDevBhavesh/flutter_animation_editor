@@ -19,8 +19,12 @@ class PropertyTrackController extends BaseController {
   final ChangeNotifier keyframesNotifer = ChangeNotifier();
   final ChangeNotifier onAnimationChange = ChangeNotifier();
   final Widget Function(PropertyTrackController contol)? inspectorBuilder;
+  bool animate = false;
 
-  // final AnimationProperty animationProperty;
+  setAnimate(bool val) {
+    animate = val;
+    notifyListeners();
+  }
 
   double snapToSecond(double a) {
     const double tolerance = 0.1; // Adjust this tolerance as needed
@@ -131,6 +135,6 @@ class PropertyTrackController extends BaseController {
   }
 
   Animation? getAnimation<T>() {
-    return _animation;
+    return animate ? _animation : null;
   }
 }

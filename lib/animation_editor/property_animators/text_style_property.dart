@@ -66,9 +66,12 @@ class TextStyleProperty extends AnimationProperty<TextStyle> {
   }
 
   @override
-  Widget buildInpector(BuildContext context, TextStyle value,
-      PropertyTrackController controller) {
-    final val = (controller.getAnimation()!.value as TextStyle);
-    return Text("Hello");
+  Widget buildInpector(
+      BuildContext context, PropertyTrackController controller) {
+    final anim = controller.getAnimation();
+    if (anim == null) return const SizedBox();
+
+    final val = (anim!.value as TextStyle);
+    return Text("${val.fontSize}");
   }
 }

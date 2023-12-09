@@ -28,7 +28,7 @@ class OffsetProperty extends AnimationProperty<Offset> {
 
   @override
   Widget buildInpector(
-      BuildContext context, Offset value, PropertyTrackController controller) {
-    return Text("x:${value.dx}, y:${value.dy}");
+      BuildContext context, PropertyTrackController controller) {
+    return Text("x");
   }
 }

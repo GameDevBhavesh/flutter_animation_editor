@@ -22,7 +22,7 @@ class ColorProperty extends AnimationProperty<Color> {
 
   @override
   Widget buildInpector(
-      BuildContext context, Color value, PropertyTrackController controller) {
+      BuildContext context, PropertyTrackController controller) {
     final anim = controller.getAnimation();
     if (anim == null) return const SizedBox();
     return AnimatedBuilder(

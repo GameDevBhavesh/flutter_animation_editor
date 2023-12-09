@@ -27,7 +27,7 @@ class BoolProperty extends AnimationProperty<bool> {
 
   @override
   Widget buildInpector(
-      BuildContext context, bool value, PropertyTrackController controller) {
-    return Text("Color: ${value}");
+      BuildContext context, PropertyTrackController controller) {
+    return Text("Color: ${controller.getAnimation()!.value.toString()}");
   }
 }

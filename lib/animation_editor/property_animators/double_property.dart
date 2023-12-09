@@ -23,8 +23,9 @@ class DoubleProperty extends AnimationProperty<double> {
 
   @override
   Widget buildInpector(
-      BuildContext context, num value, PropertyTrackController controller) {
-    return Text("${controller.track.name}: $value");
+      BuildContext context, PropertyTrackController controller) {
+    return Text(
+        "${controller.track.name}: ${controller.getAnimation()!.value.toString()}");
   }
 }
 
@@ -43,8 +44,9 @@ class IntProperty extends AnimationProperty<int> {
 
   @override
   Widget buildInpector(
-      BuildContext context, num value, PropertyTrackController controller) {
-    return Text("${controller.track.name}: $value");
+      BuildContext context, PropertyTrackController controller) {
+    return Text(
+        "${controller.track.name}: ${controller.getAnimation()!.value.toString()}");
   }
 }
 
@@ -63,7 +65,7 @@ class NumProperty extends AnimationProperty<num> {
 
   @override
   Widget buildInpector(
-      BuildContext context, num value, PropertyTrackController controller) {
+      BuildContext context, PropertyTrackController controller) {
     return DoubleInspector(
       controller: controller,
     );
@@ -91,7 +93,7 @@ class _DoubleInspectorState extends State<DoubleInspector> {
     setState(() {
       anim = widget.controller.getAnimation();
     });
-    anim!.addListener(onAnimation);
+    if (anim != null) anim!.addListener(onAnimation);
   }
 
   onAnimation() {
@@ -123,7 +125,9 @@ class _DoubleInspectorState extends State<DoubleInspector> {
   @override
   void dispose() {
     widget.controller.onAnimationChange.removeListener(updateAnim);
-    anim!.removeListener(onAnimation);
+    if (anim != null) {
+      anim!.removeListener(onAnimation);
+    }
     super.dispose();
   }
 }

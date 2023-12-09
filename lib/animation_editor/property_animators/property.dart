@@ -8,5 +8,5 @@ abstract class AnimationProperty<Type> {
   Type fromJson(dynamic json);
   dynamic toJson(Type value);
   Widget buildInpector(
-      BuildContext context, Type value, PropertyTrackController controller);
+      BuildContext context, PropertyTrackController controller);
 }

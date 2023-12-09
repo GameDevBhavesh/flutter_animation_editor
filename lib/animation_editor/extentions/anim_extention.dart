@@ -1,25 +1,5 @@
 import 'package:flutter/widgets.dart';
 
-/// Adds a [loop] extension on [AnimationController] identical to [repeat] but
-/// adding a `count` parameter specifying how many times to repeat before stopping:
-///
-///   - `count = null`: the animation loops infinitely
-///   - `count = 0`: the animation won't play
-///   - `count > 0`: the animation will play `count` times
-///
-/// The total time will always be `count * duration` (or `count * period` if specified).
-/// Therefore, if `reverse` is true, one "count" is still considered animating in a single direction.
-///
-/// For example, the following would play forward (fade in) and back (fade out) once, then stop:
-///
-/// ```
-/// Text('Hello World').animate(
-///   onPlay: (controller) => controller.loop(
-///     reverse: true,
-///     count: 2,
-///   ),
-/// ).fadeIn();
-/// ```
 extension AnimationControllerLoopExtensions on AnimationController {
   TickerFuture loop({
     int? count,
@@ -62,13 +42,6 @@ extension AnimHelp on Animation<dynamic>? {
       return this!.value!.runtimeType == int
           ? this!.value.toDouble()
           : this!.value as T;
-    }
-    return val;
-  }
-
-  double orDouble<double>(double val) {
-    if (this != null) {
-      return this!.value.toDouble();
     }
     return val;
   }

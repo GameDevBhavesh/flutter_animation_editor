@@ -68,7 +68,7 @@ class Matrix4Property extends AnimationProperty<Matrix4> {
 
   @override
   Widget buildInpector(
-      BuildContext context, Matrix4 value, PropertyTrackController controller) {
+      BuildContext context, PropertyTrackController controller) {
     return mat.TextButton(
         onPressed: () {
           final anim = controller.getAnimation();
