@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:animation_editor/animation_editor/property_animators/bool_property.dart';
 import 'package:animation_editor/animation_editor/property_animators/matrix4_property.dart';
 import 'package:animation_editor/animation_editor/property_animators/text_style_property.dart';
@@ -20,7 +18,7 @@ class Animator {
     Color: ColorProperty(),
     Matrix4: Matrix4Property(),
     wid.TextStyle: TextStyleProperty(),
-    Bool: BoolProperty()
+    bool: BoolProperty()
   };
   static T interpolate<T>(T a, T b, double t) {
     try {

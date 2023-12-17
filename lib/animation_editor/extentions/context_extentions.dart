@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:state_managment/state_magment.dart';
 
 import '../../animation_editor.dart';
 import './anim_extention.dart';

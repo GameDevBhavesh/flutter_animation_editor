@@ -66,6 +66,13 @@ class NumProperty extends AnimationProperty<num> {
   @override
   Widget buildInpector(
       BuildContext context, PropertyTrackController controller) {
+    if (controller.getAnimation() == null) {
+      return const SizedBox(
+          child: Icon(
+        Icons.lock_rounded,
+        color: Colors.white,
+      ));
+    }
     return DoubleInspector(
       controller: controller,
     );

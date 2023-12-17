@@ -7,6 +7,7 @@ import 'package:animation_editor/animation_editor/widgets/property_track_view.da
 import 'package:animation_editor/animation_editor/extentions/anim_extention.dart';
 import 'package:animation_editor/animation_editor/extentions/list_extentions.dart';
 import 'package:flutter/material.dart';
+import 'package:state_managment/state_magment.dart';
 
 import '../property_animators/double_property.dart';
 import '../state_magment/controller_manager_mixin.dart';
@@ -89,6 +90,12 @@ class TrackedAnimationController extends BaseController
     context.animationController.addListener(() {
       context.time = (context.animationController.duration!.inSeconds *
           context.animationController.value);
+
+      if (context.animationController.isAnimating && !animate) {
+        setAnimate(true);
+      } else if (!context.animationController.isAnimating && animate) {
+        setAnimate(false);
+      }
     });
     context.animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -268,7 +275,6 @@ class TrackedAnimationController extends BaseController
       return;
     }
     moveKeyframe(keyframe, details.delta.dx);
-    // keyframeUpdateNotifier.notifyListeners();
   }
 }
 

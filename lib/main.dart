@@ -9,6 +9,7 @@ import 'package:animation_editor/animation_editor/preset_widgets/container.dart'
 import 'package:animation_editor/animation_editor/preset_widgets/text.dart';
 
 import 'package:flutter/material.dart';
+import 'package:state_managment/state_magment.dart';
 
 void main() {
   runApp(const MyApp());

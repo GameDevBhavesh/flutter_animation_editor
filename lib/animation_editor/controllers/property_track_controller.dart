@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:animation_editor/animation_editor/property_animators/animator.dart';
 import 'package:flutter/widgets.dart';
+import 'package:state_managment/state_magment.dart';
 import '../animation/keyframe_sequence.dart';
 import '../models/models.dart';
 import '../extentions/duration_extentions.dart';

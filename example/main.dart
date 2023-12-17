@@ -8,6 +8,7 @@ import 'package:animation_editor/animation_editor.dart';
 import 'package:animation_editor/animation_editor/widgets.dart';
 
 import 'package:flutter/material.dart';
+import 'package:state_managment/state_magment.dart';
 
 void main() {
   runApp(const MyApp());
