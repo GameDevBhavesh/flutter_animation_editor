@@ -50,7 +50,8 @@ class TrackedAnimation {
   factory TrackedAnimation.fromJson(Map<String, dynamic> json) =>
       TrackedAnimation(
           name: json["name"],
-          duration: Duration(seconds: json["duration"]["seconds"].toDouble()),
+          duration:
+              Duration(seconds: (json["duration"]["seconds"] as num).toInt()),
           objectTracks: (json["objectTracks"] as Map<String, dynamic>)
               .map((key, value) => MapEntry(key, ObjectTrack.fromJson(value))));
 
