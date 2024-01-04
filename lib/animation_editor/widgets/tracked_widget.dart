@@ -5,21 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:state_managment/state_magment.dart';
 
 class TrackedWidget extends StatelessWidget {
-  const TrackedWidget({
-    super.key,
-    required this.id,
-    required this.builder,
-  });
+  const TrackedWidget(
+      {super.key,
+      required this.id,
+      required this.builder,
+      this.isAnimating = true});
   final String id;
   final Widget Function(BuildContext context) builder;
-
+  final bool isAnimating;
   @override
   Widget build(BuildContext context) {
     final editor = ControllerQuery.of<TrackedAnimationController>(context);
-    if (editor != null) {
-      final objController = editor.readChildController(id);
-      print("isAnimating $objController");
-      if (objController != null) {
+    if (editor != null && isAnimating) {
+      final objController = editor.readChildController(id)!;
+      if (objController == null) {
         return ControllerQuery<ObjectTrackController>(
             controller: objController,
             child: ListenableBuilder(
