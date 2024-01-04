@@ -61,10 +61,12 @@ class PropertyTrackSequenceAnimation<T> extends Animatable<T> {
     if (framesCount <= 0) return;
     final trackType = track.keyframes[0].value.runtimeType;
     customAnimators = customAnimators ?? Animator.interpolators;
+
     if (!customAnimators.containsKey(trackType)) {
       throw StateError(
           'No lerper found for type ${trackType.toString()} please pass mapped list of lerpers which containes lerper for type :${trackType.toString()}');
     }
+
     maxTime = track.keyframes[framesCount - 1].time;
     minTime = track.keyframes[0].time;
 

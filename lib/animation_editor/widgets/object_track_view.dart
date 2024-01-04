@@ -35,32 +35,31 @@ class ObjectTrackView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget childs = Column(
-      children: [
-        for (final key in controller.objectTrack.tracks.keys)
-          PropertyTrackView(
-            height: height,
-            inspectorBuilder: controller.inpectorBuilders![
-                controller.objectTrack.tracks[key]!.dataType],
-            controller: controller.readChildController(key)!,
-            splitViewBuilder: splitViewBuilder,
-          )
-      ],
-    );
     return Container(
       color: backgroundColor,
       child: ListenableBuilder(
         listenable: controller,
         builder: (context, child) {
+          Widget childs = Column(
+            children: [
+              for (final key in controller.objectTrack.tracks.keys)
+                PropertyTrackView(
+                  height: height,
+                  inspectorBuilder: controller.inpectorBuilders![
+                      controller.objectTrack.tracks[key]!.dataType],
+                  controller: controller.readChildController(key)!,
+                  splitViewBuilder: splitViewBuilder,
+                )
+            ],
+          );
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               buildHeader(context),
-              if (!controller.objectTrack.isCollapsed) child!
+              if (!controller.objectTrack.isCollapsed) childs!
             ],
           );
         },
-        child: childs,
       ),
     );
   }

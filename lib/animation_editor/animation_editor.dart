@@ -46,34 +46,31 @@ class TrackedAnimationEditor extends StatelessWidget {
       builder: (context, child) {
         return Material(
           color: const Color.fromARGB(255, 0, 0, 0),
-          child: SelectionArea(
-            selectionControls: MaterialTextSelectionControls(),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      Stack(
-                        children: [
-                          buildTopbar(context),
-                          buildTopbarOverlay(context)
-                        ],
-                      ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Stack(
-                            children: [
-                              buildBody(),
-                            ],
-                          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        buildTopbar(context),
+                        buildTopbarOverlay(context)
+                      ],
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Stack(
+                          children: [
+                            buildBody(),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },

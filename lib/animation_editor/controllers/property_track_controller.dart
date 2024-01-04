@@ -5,7 +5,7 @@ import 'package:state_managment/state_magment.dart';
 import '../animation/keyframe_sequence.dart';
 import '../models/models.dart';
 import '../extentions/duration_extentions.dart';
-import '../state_magment/controller_query.dart';
+
 import 'tracked_anim_controller.dart';
 
 class PropertyTrackController extends BaseController {
@@ -20,11 +20,11 @@ class PropertyTrackController extends BaseController {
   final ChangeNotifier keyframesNotifer = ChangeNotifier();
   final ChangeNotifier onAnimationChange = ChangeNotifier();
   final Widget Function(PropertyTrackController contol)? inspectorBuilder;
-  bool animate = false;
+  bool animate = true;
 
   setAnimate(bool val) {
-    animate = val;
-    notifyListeners();
+    // animate = val;
+    // notifyListeners();
   }
 
   double snapToSecond(double a) {
@@ -73,14 +73,15 @@ class PropertyTrackController extends BaseController {
           curve: null,
           time: context.time,
           value: value ?? anim.value,
-          objectKey: track.objectTrackKey,
-          trackKey: key));
+          objectId: track.objectTrackId,
+          trackId: key));
     }
     createAnimation();
   }
 
   addKeyframe(Keyframe frame) {
     track.keyframes.add(frame);
+    createAnimation();
     notifyListeners();
   }
 

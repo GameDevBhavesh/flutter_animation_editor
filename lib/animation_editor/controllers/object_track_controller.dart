@@ -1,12 +1,10 @@
 import 'package:animation_editor/animation_editor/extentions/list_extentions.dart';
 import 'package:state_managment/state_magment.dart';
 
-import '../state_magment/controller_manager_mixin.dart';
 import '../models/models.dart';
 import 'property_track_controller.dart';
 import 'tracked_anim_controller.dart';
 import 'package:flutter/widgets.dart';
-import '../state_magment/controller_query.dart';
 
 class ObjectTrackController extends BaseController
     with MultiControllerManagerMixin<PropertyTrackController> {
@@ -80,20 +78,40 @@ class ObjectTrackController extends BaseController
     return res.union((element) => element.time);
   }
 
-  addPropertyTrack(String key, String name, Type dataType, {String? group}) {
-    final inspector = inpectorBuilders![key];
+  addKeyframeOrPropertyTrack(
+      String id, String name, Type dataType, dynamic value) {
+    if (!hasPropertyTrack(id)) {
+      addPropertyTrack(id, name, dataType);
+    }
+    readChildController(id)!.addKeyframe(Keyframe(
+        curve: const Cubic(0, 0, 0, 0),
+        time: context.time,
+        value: value,
+        dataType: dataType,
+        objectId: objectTrack.id,
+        trackId: id));
+    if (objectTrack.isCollapsed) notifyListeners();
+    print("${id} ${dataType} added  property");
+  }
+
+  bool hasPropertyTrack(String id) {
+    return objectTrack.tracks.containsKey(id);
+  }
+
+  addPropertyTrack(String id, String name, Type dataType, {String? group}) {
+    final inspector = inpectorBuilders![id];
     final pTrack = objectTrack.tracks.putIfAbsent(
-        key,
+        id,
         () => PropertyTrack(
-            objectTrackKey: this.key,
-            key: key,
+            objectTrackId: this.key,
+            id: id,
             name: name,
             group: group ?? "none",
             dataType: dataType,
             keyframes: []));
     addChildController(
-        key,
-        PropertyTrackController(pTrack, key, context,
+        id,
+        PropertyTrackController(pTrack, id, context,
             inspectorBuilder: inspector));
     notifyListeners();
   }

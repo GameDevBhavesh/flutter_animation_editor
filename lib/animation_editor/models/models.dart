@@ -64,11 +64,12 @@ class TrackedAnimation {
 }
 
 class ObjectTrack {
+  final String id;
   final String name;
-
   final Map<String, PropertyTrack> tracks;
   bool isCollapsed;
   ObjectTrack({
+    required this.id,
     required this.name,
     required this.isCollapsed,
     required this.tracks,
@@ -76,16 +77,19 @@ class ObjectTrack {
 
   ObjectTrack copyWith({
     String? name,
+    String? id,
     bool? isCollapsed,
     Map<String, PropertyTrack>? tracks,
   }) =>
       ObjectTrack(
+        id: id ?? this.id,
         name: name ?? this.name,
         isCollapsed: isCollapsed ?? this.isCollapsed,
         tracks: tracks ?? this.tracks,
       );
 
   factory ObjectTrack.fromJson(Map<String, dynamic> json) => ObjectTrack(
+        id: json["id"],
         name: json["name"],
         isCollapsed: json["isCollapsed"],
         tracks: (json["tracks"] as Map<String, dynamic>)
@@ -93,6 +97,7 @@ class ObjectTrack {
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "name": name,
         "isCollapsed": isCollapsed,
         "tracks": tracks.map((key, value) => MapEntry(key, value.toJson())),
@@ -101,8 +106,8 @@ class ObjectTrack {
 
 class PropertyTrack<T> {
   final String name;
-  final String objectTrackKey;
-  final String key;
+  final String objectTrackId;
+  final String id;
   final String group;
   Type dataType;
 
@@ -111,8 +116,8 @@ class PropertyTrack<T> {
   PropertyTrack(
       {required this.name,
       required this.group,
-      required this.key,
-      required this.objectTrackKey,
+      required this.id,
+      required this.objectTrackId,
       required this.keyframes,
       required this.dataType}) {
     keyframes.forEach((element) {
@@ -132,8 +137,8 @@ class PropertyTrack<T> {
         dataType: dataType ?? this.dataType,
         name: name ?? this.name,
         group: group ?? this.group,
-        key: key ?? this.key,
-        objectTrackKey: objectTrackKey ?? this.objectTrackKey,
+        id: key ?? this.id,
+        objectTrackId: objectTrackKey ?? this.objectTrackId,
         keyframes: keyframes ?? this.keyframes,
       );
 
@@ -154,8 +159,8 @@ class PropertyTrack<T> {
     return PropertyTrack(
       name: json["name"],
       group: json["group"],
-      objectTrackKey: json["objectTrackKey"],
-      key: json["key"],
+      objectTrackId: json["objectTrackKey"],
+      id: json["key"],
       dataType: type,
       keyframes: List<Keyframe<T>>.from(json["keyframes"]
           .map((x) => Keyframe<T>.fromJson(x)..dataType = type)),
@@ -166,8 +171,8 @@ class PropertyTrack<T> {
     return {
       "name": name,
       "group": group,
-      "objectTrackKey": objectTrackKey,
-      "key": key,
+      "objectTrackKey": objectTrackId,
+      "key": id,
       "dataType": dataType.toString(),
       "keyframes": List<dynamic>.from(keyframes.map((x) => x.toJson())),
     };
@@ -203,8 +208,8 @@ class Keyframe<T> {
   double time;
   T value;
   Cubic? curve;
-  final String trackKey;
-  final String objectKey;
+  final String trackId;
+  final String objectId;
   Type? dataType;
 
   Keyframe(
@@ -212,8 +217,8 @@ class Keyframe<T> {
       required this.curve,
       required this.time,
       required this.value,
-      required this.objectKey,
-      required this.trackKey});
+      required this.objectId,
+      required this.trackId});
 
   @override
   bool operator ==(other) {
@@ -231,8 +236,8 @@ class Keyframe<T> {
           curve: curve ?? this.curve,
           time: time ?? this.time,
           value: value ?? this.value,
-          objectKey: objectKey ?? this.objectKey,
-          trackKey: trackKey ?? this.trackKey);
+          objectId: objectKey ?? this.objectId,
+          trackId: trackKey ?? this.trackId);
 
   factory Keyframe.fromJson(
     Map<String, dynamic> json,
@@ -242,8 +247,8 @@ class Keyframe<T> {
           json["curve"]["c"].toDouble(), json["curve"]["d"].toDouble()),
       time: json["time"]?.toDouble(),
       value: json["value"],
-      objectKey: json["objectKey"],
-      trackKey: json["trackKey"],
+      objectId: json["objectKey"],
+      trackId: json["trackKey"],
     );
   }
 
@@ -253,8 +258,8 @@ class Keyframe<T> {
       "value": Animator.interpolators[dataType]!.toJson(value),
       "curve": {"a": curve!.a, "b": curve!.b, "c": curve!.c, "d": curve!.d},
       "dataType": dataType.toString(),
-      "objectKey": objectKey,
-      "trackKey": trackKey,
+      "objectKey": objectId,
+      "trackKey": trackId,
     };
   }
 

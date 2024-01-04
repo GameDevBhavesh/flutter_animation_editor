@@ -1,17 +1,14 @@
 import 'dart:ui';
 
 import 'package:animation_editor/animation_editor/controllers/property_track_controller.dart';
-import 'package:animation_editor/animation_editor/state_magment/controller_query.dart';
-import 'package:animation_editor/animation_editor/widgets/property_track_view.dart';
 // import 'package:animation_editor/src/controller.dart';
 import 'package:animation_editor/animation_editor/extentions/anim_extention.dart';
 import 'package:animation_editor/animation_editor/extentions/list_extentions.dart';
 import 'package:flutter/material.dart';
 import 'package:state_managment/state_magment.dart';
 
-import '../property_animators/double_property.dart';
-import '../state_magment/controller_manager_mixin.dart';
 import '../models/models.dart';
+import '../property_animators/double_property.dart';
 import 'object_track_controller.dart';
 
 class AnimationEditorContext {
@@ -171,24 +168,28 @@ class TrackedAnimationController extends BaseController
     _defaultTracks = defaultTracks;
   }
 
-  addObjectTrack(String key, String name) {
+  ObjectTrackController addObjectTrack(String id, String name) {
     final track = trackedAnimation.objectTracks.putIfAbsent(
-      key,
+      id,
       () {
         return ObjectTrack(
-            isCollapsed: false, name: name, tracks: _defaultTracks ?? {});
+            id: id,
+            isCollapsed: false,
+            name: name,
+            tracks: _defaultTracks ?? {});
       },
     );
-    addChildController(
-        key,
-        ObjectTrackController(track, key, context,
-            inpectorBuilders: configuration?.propertyInspectorBuilder));
+    final controller = ObjectTrackController(track, id, context,
+        inpectorBuilders: configuration?.propertyInspectorBuilder);
+    addChildController(id, controller);
+
     notifyListeners();
+    return controller;
   }
 
-  deleteObjectTrack(String key) {
-    trackedAnimation.objectTracks.remove(key);
-    deleteChildController(key);
+  deleteObjectTrack(String id) {
+    trackedAnimation.objectTracks.remove(id);
+    deleteChildController(id);
     notifyListeners();
   }
 
@@ -210,9 +211,9 @@ class TrackedAnimationController extends BaseController
       moveKeyframe(keyframe, details.delta.dx);
     }
     final totalObjectTracks =
-        selectedKeyframes.union((element) => element.objectKey);
+        selectedKeyframes.union((element) => element.objectId);
     for (var element in totalObjectTracks) {
-      readChildController(element.objectKey)?.notifyListeners();
+      readChildController(element.objectId)?.notifyListeners();
     }
   }
 
@@ -322,11 +323,11 @@ class AnimationEditorConfiguration {
                 children: [
                   Text(
                     anim.value.dx.toString(),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                   Text(
                     anim.value.dy.toString(),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   )
                 ],
               );
