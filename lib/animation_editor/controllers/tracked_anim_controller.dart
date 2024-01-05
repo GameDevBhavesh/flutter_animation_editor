@@ -36,17 +36,21 @@ class AnimationEditorContext {
 
 class TrackedAnimationController extends BaseController
     with MultiControllerManagerMixin<ObjectTrackController> {
-  TrackedAnimationController(this.trackedAnimation, this.vsync,
-      {this.configuration}) {
+  TrackedAnimationController(
+    this.trackedAnimation,
+    this.vsync,
+  ) {
     initAnimatorEvents();
     for (final objTrack in trackedAnimation.objectTracks.entries) {
       addChildController(
           objTrack.key,
-          ObjectTrackController(objTrack.value, objTrack.key, context,
-              inpectorBuilders: configuration?.propertyInspectorBuilder));
+          ObjectTrackController(
+            objTrack.value,
+            objTrack.key,
+            context,
+          ));
     }
   }
-  final AnimationEditorConfiguration? configuration;
 
   //controlers
   late TextEditingController durationTextController = TextEditingController(
@@ -149,6 +153,17 @@ class TrackedAnimationController extends BaseController
         .animateTo(pos, duration: const Duration(milliseconds: 0));
   }
 
+  animateTo(
+    double target, {
+    Duration? duration,
+    Curve curve = Curves.linear,
+  }) {
+    context.time = context.animationController.duration!.inSeconds * target;
+
+    context.animationController.animateTo(target,
+        duration: const Duration(milliseconds: 0), curve: curve);
+  }
+
   changePlaymode(String mode) {
     playMode = mode;
     notifyListeners();
@@ -179,8 +194,11 @@ class TrackedAnimationController extends BaseController
             tracks: _defaultTracks ?? {});
       },
     );
-    final controller = ObjectTrackController(track, id, context,
-        inpectorBuilders: configuration?.propertyInspectorBuilder);
+    final controller = ObjectTrackController(
+      track,
+      id,
+      context,
+    );
     addChildController(id, controller);
 
     notifyListeners();
@@ -276,87 +294,5 @@ class TrackedAnimationController extends BaseController
       return;
     }
     moveKeyframe(keyframe, details.delta.dx);
-  }
-}
-
-class ValueParser<T> {
-  const ValueParser({required this.toJson, required this.fromJson});
-  final Map<String, dynamic> Function(T value) toJson;
-  final T Function(Map<String, dynamic> json) fromJson;
-}
-
-class AnimationEditorConfiguration {
-  const AnimationEditorConfiguration(
-      {required this.valueParsers, required this.propertyInspectorBuilder});
-
-  //How to parse v
-  final Map<String, ValueParser> valueParsers;
-  final Map<String, Widget Function(PropertyTrackController controller)>
-      propertyInspectorBuilder;
-
-  factory AnimationEditorConfiguration.defaults() {
-    return AnimationEditorConfiguration(valueParsers: {
-      "offset": ValueParser<Offset>(
-        fromJson: (json) => Offset(
-          json["dx"].toDouble(),
-          json["dy"].toDouble(),
-        ),
-        toJson: (value) => {"dx": value.dx, "dy": value.dy},
-      ),
-      "color": ValueParser<Color>(
-        fromJson: (json) => Color(int.parse(json["value"])),
-        toJson: (value) => {"value": value.toString()},
-      ),
-      "double": ValueParser<double>(
-        fromJson: (json) => json["value"].toDouble(),
-        toJson: (value) => {"value": value},
-      ),
-    }, propertyInspectorBuilder: {
-      "offset": (PropertyTrackController controller) {
-        final anim = controller.getAnimation();
-        if (anim == null) return const SizedBox();
-        return AnimatedBuilder(
-            animation: anim,
-            builder: (context, child) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    anim.value.dx.toString(),
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  Text(
-                    anim.value.dy.toString(),
-                    style: const TextStyle(color: Colors.white),
-                  )
-                ],
-              );
-            });
-      },
-      "color": (PropertyTrackController controller) {
-        final anim = controller.getAnimation();
-        if (anim == null) return const SizedBox();
-        return AnimatedBuilder(
-            animation: anim,
-            builder: (context, child) {
-              return Center(
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    width: 30,
-                    height: 30,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        color: anim.value,
-                        borderRadius: BorderRadius.circular(5)),
-                  ),
-                ),
-              );
-            });
-      },
-      "double": (PropertyTrackController controller) {
-        return DoubleInspector(controller: controller);
-      }
-    });
   }
 }

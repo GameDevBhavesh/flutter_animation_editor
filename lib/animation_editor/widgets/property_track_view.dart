@@ -7,17 +7,16 @@ import '../models/models.dart';
 import 'keyframes_area_view.dart';
 
 class PropertyTrackView extends StatefulWidget {
-  const PropertyTrackView(
-      {super.key,
-      this.height = 35,
-      required this.controller,
-      this.splitViewBuilder,
-      this.inspectorBuilder});
+  const PropertyTrackView({
+    super.key,
+    this.height = 35,
+    required this.controller,
+    this.splitViewBuilder,
+  });
 
   final PropertyTrackController controller;
 
   final Widget Function(BuildContext context)? splitViewBuilder;
-  final Widget Function(PropertyTrackController control)? inspectorBuilder;
 
   final double height;
   static const Color backgroundColor = Color.fromARGB(255, 15, 15, 15);

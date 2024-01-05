@@ -9,17 +9,16 @@ import '../controllers/object_track_controller.dart';
 import '../models/models.dart';
 
 class ObjectTrackView extends StatelessWidget {
-  const ObjectTrackView(
-      {super.key,
-      required this.controller,
-      this.onExpand,
-      this.height = 35,
-      this.splitViewBuilder,
-      this.inspectorBuilder});
+  const ObjectTrackView({
+    super.key,
+    required this.controller,
+    this.onExpand,
+    this.height = 35,
+    this.splitViewBuilder,
+  });
 
   //final AnimationEditorController controller
   final ObjectTrackController controller;
-  final Widget Function(BuildContext context)? inspectorBuilder;
 
   //final String headerTitleText
   final Function()? onExpand;
@@ -45,8 +44,6 @@ class ObjectTrackView extends StatelessWidget {
               for (final key in controller.objectTrack.tracks.keys)
                 PropertyTrackView(
                   height: height,
-                  inspectorBuilder: controller.inpectorBuilders![
-                      controller.objectTrack.tracks[key]!.dataType],
                   controller: controller.readChildController(key)!,
                   splitViewBuilder: splitViewBuilder,
                 )

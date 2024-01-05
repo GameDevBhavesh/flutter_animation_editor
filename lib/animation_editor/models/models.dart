@@ -71,7 +71,7 @@ class ObjectTrack {
   ObjectTrack({
     required this.id,
     required this.name,
-    required this.isCollapsed,
+    this.isCollapsed = true,
     required this.tracks,
   });
 

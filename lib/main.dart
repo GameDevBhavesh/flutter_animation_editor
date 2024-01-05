@@ -53,436 +53,435 @@ class _AnimationEditorPageState extends State<AnimationEditorPage>
   @override
   void initState() {
     controller = TrackedAnimationController(
-        TrackedAnimation(
-            name: "Anim 1",
-            objectTracks: {
-              "item1": ObjectTrack(
-                  id: "item1",
-                  name: "item1",
-                  tracks: {
-                    "x": PropertyTrack(
-                        id: "x",
-                        dataType: double,
-                        objectTrackId: "item1",
-                        name: "X",
-                        group: "transfrom",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(.38, .13, .42, .32),
-                              time: 0.01,
-                              objectId: 'item1',
-                              trackId: 'x',
-                              value: 0),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 2,
-                              objectId: 'item1',
-                              trackId: 'x',
-                              value: 500),
-                        ]),
-                    "y": PropertyTrack(
-                        id: "y",
-                        dataType: double,
-                        objectTrackId: "item1",
-                        name: "Y",
-                        group: "transfrom",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 0.01,
-                              objectId: '',
-                              trackId: '',
-                              value: 0),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 2,
-                              objectId: '',
-                              trackId: '',
-                              value: 0),
-                        ]),
-                    "color": PropertyTrack(
-                        id: "color",
-                        dataType: Color,
-                        objectTrackId: "item1",
-                        name: "Color",
-                        group: "Style",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 0.01,
-                              objectId: '',
-                              trackId: '',
-                              value: Color.fromARGB(255, 255, 255, 255)),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 2,
-                              objectId: '',
-                              trackId: '',
-                              value: Color.fromARGB(255, 0, 60, 255)),
-                        ]),
-                    "width": PropertyTrack(
-                        id: "width",
-                        dataType: double,
-                        objectTrackId: "item1",
-                        name: "width",
-                        group: "transfrom",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(.38, .13, .42, .32),
-                              time: 0.01,
-                              objectId: 'item1',
-                              trackId: 'width',
-                              value: 200),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 2,
-                              objectId: 'item1',
-                              trackId: 'width',
-                              value: 300),
-                        ]),
-                    "transform": PropertyTrack(
-                        dataType: Matrix4,
-                        objectTrackId: "item1",
-                        id: "transform",
-                        name: "transform",
-                        group: "transfrom",
-                        keyframes: [
-                          Keyframe<Matrix4>(
-                              curve: const Cubic(.38, .13, .42, .32),
-                              time: 0.01,
-                              objectId: 'item1',
-                              trackId: 'transform',
-                              value: Matrix4.translationValues(0, 0, 0)
-                                ..rotateZ(0)),
-                          Keyframe<Matrix4>(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 2,
-                              objectId: 'item1',
-                              trackId: 'transform',
-                              value: Matrix4.translationValues(100, 100, 100)
-                                ..rotateZ(3)),
-                        ]),
-                    "opacity": PropertyTrack(
-                        dataType: double,
-                        objectTrackId: "item1",
-                        id: "opacity",
-                        name: "opacity",
-                        group: "opacity",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(.38, .13, .42, .32),
-                              time: 0.01,
-                              objectId: 'item1',
-                              trackId: 'opacity',
-                              value: 1.0),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 5,
-                              objectId: 'item1',
-                              trackId: 'opacity',
-                              value: 0.0),
-                        ]),
-                    "radius": PropertyTrack(
-                        dataType: double,
-                        objectTrackId: "item1",
-                        id: "radius",
-                        name: "radius",
-                        group: "radius",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(.38, .13, .42, .32),
-                              time: 0.01,
-                              objectId: 'item1',
-                              trackId: 'radius',
-                              value: 0),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 4.0,
-                              objectId: 'item1',
-                              trackId: 'radius',
-                              value: 100),
-                        ]),
-                    "percent": PropertyTrack(
-                        dataType: double,
-                        objectTrackId: "item1",
-                        id: "percent",
-                        name: "percent",
-                        group: "percent",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(.38, .13, .42, .32),
-                              time: 0.01,
-                              objectId: 'item1',
-                              trackId: 'percent',
-                              value: 0.0),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 4.0,
-                              objectId: 'item1',
-                              trackId: 'percent',
-                              value: 1.0),
-                        ]),
-                    "style": PropertyTrack<TextStyle>(
-                        dataType: TextStyle,
-                        objectTrackId: "item1",
-                        id: "style",
-                        name: "style",
-                        group: "style",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(.38, .13, .42, .32),
-                              time: 0.01,
-                              objectId: 'item1',
-                              trackId: 'style',
-                              value: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                  fontSize: 60)),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 4.0,
-                              objectId: 'item1',
-                              trackId: 'style',
-                              value:
-                                  TextStyle(color: Colors.cyan, fontSize: 20)),
-                        ]),
-                  },
-                  isCollapsed: false),
-              "item2": ObjectTrack(
-                  id: "item2",
-                  name: "item2",
-                  tracks: {
-                    "x": PropertyTrack(
-                        id: "x",
-                        dataType: double,
-                        objectTrackId: "item2",
-                        name: "X",
-                        group: "transfrom",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(.38, .13, .42, .32),
-                              time: 0.01,
-                              objectId: 'item2',
-                              trackId: 'x',
-                              value: 0),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 2,
-                              objectId: 'item2',
-                              trackId: 'x',
-                              value: 500),
-                        ]),
-                    "y": PropertyTrack(
-                        dataType: double,
-                        objectTrackId: "item2",
-                        id: "y",
-                        name: "Y",
-                        group: "transfrom",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 0.01,
-                              objectId: '',
-                              trackId: '',
-                              value: 0),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 2,
-                              objectId: '',
-                              trackId: '',
-                              value: 350),
-                        ]),
-                    "color": PropertyTrack(
-                        dataType: Color,
-                        objectTrackId: "item2",
-                        id: "color",
-                        name: "Color",
-                        group: "Style",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 0.01,
-                              objectId: '',
-                              trackId: '',
-                              value: Color.fromARGB(255, 255, 255, 255)),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 2,
-                              objectId: '',
-                              trackId: '',
-                              value: Color.fromARGB(255, 0, 60, 255)),
-                        ]),
-                    "width": PropertyTrack(
-                        dataType: double,
-                        objectTrackId: "item2",
-                        id: "width",
-                        name: "width",
-                        group: "transfrom",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(.38, .13, .42, .32),
-                              time: 0.01,
-                              objectId: 'item2',
-                              trackId: 'width',
-                              value: 200),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 2,
-                              objectId: 'item2',
-                              trackId: 'width',
-                              value: 300),
-                        ]),
-                    "rotation": PropertyTrack(
-                        dataType: double,
-                        objectTrackId: "item2",
-                        id: "rotation",
-                        name: "rotation",
-                        group: "transfrom",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(.38, .13, .42, .32),
-                              time: 0.01,
-                              objectId: 'item2',
-                              trackId: 'rotation',
-                              value: 0),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 2,
-                              objectId: 'item2',
-                              trackId: 'rotation',
-                              value: 6.283185307179586),
-                        ]),
-                  },
-                  isCollapsed: false),
-              "item3": ObjectTrack(
-                  id: "item3",
-                  name: "item3",
-                  tracks: {
-                    "x": PropertyTrack<double>(
-                        id: "x",
-                        dataType: double,
-                        objectTrackId: "item3",
-                        name: "X",
-                        group: "transfrom",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(.38, .13, .42, .32),
-                              time: 0.01,
-                              objectId: 'item3',
-                              trackId: 'x',
-                              value: 0),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 2,
-                              objectId: 'item3',
-                              trackId: 'x',
-                              value: 500),
-                        ]),
-                    "y": PropertyTrack<double>(
-                        dataType: double,
-                        objectTrackId: "item3",
-                        id: "y",
-                        name: "Y",
-                        group: "transfrom",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 0.01,
-                              objectId: '',
-                              trackId: '',
-                              value: 0),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 2,
-                              objectId: '',
-                              trackId: '',
-                              value: 350),
-                        ]),
-                    "color": PropertyTrack<Color>(
-                        dataType: Color,
-                        objectTrackId: "item3",
-                        id: "color",
-                        name: "Color",
-                        group: "Style",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 0.01,
-                              objectId: '',
-                              trackId: '',
-                              value: Color.fromARGB(255, 255, 255, 255)),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 2,
-                              objectId: '',
-                              trackId: '',
-                              value: Color.fromARGB(255, 0, 60, 255)),
-                        ]),
-                    "width": PropertyTrack<double>(
-                        dataType: double,
-                        objectTrackId: "item3",
-                        id: "width",
-                        name: "width",
-                        group: "transfrom",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(.38, .13, .42, .32),
-                              time: 0.01,
-                              objectId: 'item3',
-                              trackId: 'width',
-                              value: 200),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 2,
-                              objectId: 'item3',
-                              trackId: 'width',
-                              value: 300),
-                        ]),
-                    "rotation": PropertyTrack<double>(
-                        dataType: double,
-                        objectTrackId: "item3",
-                        id: "rotation",
-                        name: "rotation",
-                        group: "transfrom",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(.38, .13, .42, .32),
-                              time: 0.01,
-                              objectId: 'item3',
-                              trackId: 'rotation',
-                              value: 0),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 2,
-                              objectId: 'item3',
-                              trackId: 'rotation',
-                              value: 6.283185307179586),
-                        ]),
-                    "percent": PropertyTrack<double>(
-                        dataType: double,
-                        objectTrackId: "item3",
-                        id: "percent",
-                        name: "percent",
-                        group: "percent",
-                        keyframes: [
-                          Keyframe(
-                              curve: const Cubic(.38, .13, .42, .32),
-                              time: 0.01,
-                              objectId: 'item3',
-                              trackId: 'percent',
-                              value: 0.0),
-                          Keyframe(
-                              curve: const Cubic(0, 0, 1, 1),
-                              time: 4.0,
-                              objectId: 'item3',
-                              trackId: 'percent',
-                              value: 1.0),
-                        ]),
-                  },
-                  isCollapsed: false),
-            },
-            duration: const Duration(seconds: 5)),
-        this,
-        configuration: AnimationEditorConfiguration.defaults());
+      TrackedAnimation(
+          name: "Anim 1",
+          objectTracks: {
+            "item1": ObjectTrack(
+                id: "item1",
+                name: "item1",
+                tracks: {
+                  "x": PropertyTrack(
+                      id: "x",
+                      dataType: double,
+                      objectTrackId: "item1",
+                      name: "X",
+                      group: "transfrom",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(.38, .13, .42, .32),
+                            time: 0.01,
+                            objectId: 'item1',
+                            trackId: 'x',
+                            value: 0),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 2,
+                            objectId: 'item1',
+                            trackId: 'x',
+                            value: 500),
+                      ]),
+                  "y": PropertyTrack(
+                      id: "y",
+                      dataType: double,
+                      objectTrackId: "item1",
+                      name: "Y",
+                      group: "transfrom",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 0.01,
+                            objectId: '',
+                            trackId: '',
+                            value: 0),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 2,
+                            objectId: '',
+                            trackId: '',
+                            value: 0),
+                      ]),
+                  "color": PropertyTrack(
+                      id: "color",
+                      dataType: Color,
+                      objectTrackId: "item1",
+                      name: "Color",
+                      group: "Style",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 0.01,
+                            objectId: '',
+                            trackId: '',
+                            value: Color.fromARGB(255, 255, 255, 255)),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 2,
+                            objectId: '',
+                            trackId: '',
+                            value: Color.fromARGB(255, 0, 60, 255)),
+                      ]),
+                  "width": PropertyTrack(
+                      id: "width",
+                      dataType: double,
+                      objectTrackId: "item1",
+                      name: "width",
+                      group: "transfrom",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(.38, .13, .42, .32),
+                            time: 0.01,
+                            objectId: 'item1',
+                            trackId: 'width',
+                            value: 200),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 2,
+                            objectId: 'item1',
+                            trackId: 'width',
+                            value: 300),
+                      ]),
+                  "transform": PropertyTrack(
+                      dataType: Matrix4,
+                      objectTrackId: "item1",
+                      id: "transform",
+                      name: "transform",
+                      group: "transfrom",
+                      keyframes: [
+                        Keyframe<Matrix4>(
+                            curve: const Cubic(.38, .13, .42, .32),
+                            time: 0.01,
+                            objectId: 'item1',
+                            trackId: 'transform',
+                            value: Matrix4.translationValues(0, 0, 0)
+                              ..rotateZ(0)),
+                        Keyframe<Matrix4>(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 2,
+                            objectId: 'item1',
+                            trackId: 'transform',
+                            value: Matrix4.translationValues(100, 100, 100)
+                              ..rotateZ(3)),
+                      ]),
+                  "opacity": PropertyTrack(
+                      dataType: double,
+                      objectTrackId: "item1",
+                      id: "opacity",
+                      name: "opacity",
+                      group: "opacity",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(.38, .13, .42, .32),
+                            time: 0.01,
+                            objectId: 'item1',
+                            trackId: 'opacity',
+                            value: 1.0),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 5,
+                            objectId: 'item1',
+                            trackId: 'opacity',
+                            value: 0.0),
+                      ]),
+                  "radius": PropertyTrack(
+                      dataType: double,
+                      objectTrackId: "item1",
+                      id: "radius",
+                      name: "radius",
+                      group: "radius",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(.38, .13, .42, .32),
+                            time: 0.01,
+                            objectId: 'item1',
+                            trackId: 'radius',
+                            value: 0),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 4.0,
+                            objectId: 'item1',
+                            trackId: 'radius',
+                            value: 100),
+                      ]),
+                  "percent": PropertyTrack(
+                      dataType: double,
+                      objectTrackId: "item1",
+                      id: "percent",
+                      name: "percent",
+                      group: "percent",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(.38, .13, .42, .32),
+                            time: 0.01,
+                            objectId: 'item1',
+                            trackId: 'percent',
+                            value: 0.0),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 4.0,
+                            objectId: 'item1',
+                            trackId: 'percent',
+                            value: 1.0),
+                      ]),
+                  "style": PropertyTrack<TextStyle>(
+                      dataType: TextStyle,
+                      objectTrackId: "item1",
+                      id: "style",
+                      name: "style",
+                      group: "style",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(.38, .13, .42, .32),
+                            time: 0.01,
+                            objectId: 'item1',
+                            trackId: 'style',
+                            value: TextStyle(
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                fontSize: 60)),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 4.0,
+                            objectId: 'item1',
+                            trackId: 'style',
+                            value: TextStyle(color: Colors.cyan, fontSize: 20)),
+                      ]),
+                },
+                isCollapsed: false),
+            "item2": ObjectTrack(
+                id: "item2",
+                name: "item2",
+                tracks: {
+                  "x": PropertyTrack(
+                      id: "x",
+                      dataType: double,
+                      objectTrackId: "item2",
+                      name: "X",
+                      group: "transfrom",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(.38, .13, .42, .32),
+                            time: 0.01,
+                            objectId: 'item2',
+                            trackId: 'x',
+                            value: 0),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 2,
+                            objectId: 'item2',
+                            trackId: 'x',
+                            value: 500),
+                      ]),
+                  "y": PropertyTrack(
+                      dataType: double,
+                      objectTrackId: "item2",
+                      id: "y",
+                      name: "Y",
+                      group: "transfrom",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 0.01,
+                            objectId: '',
+                            trackId: '',
+                            value: 0),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 2,
+                            objectId: '',
+                            trackId: '',
+                            value: 350),
+                      ]),
+                  "color": PropertyTrack(
+                      dataType: Color,
+                      objectTrackId: "item2",
+                      id: "color",
+                      name: "Color",
+                      group: "Style",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 0.01,
+                            objectId: '',
+                            trackId: '',
+                            value: Color.fromARGB(255, 255, 255, 255)),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 2,
+                            objectId: '',
+                            trackId: '',
+                            value: Color.fromARGB(255, 0, 60, 255)),
+                      ]),
+                  "width": PropertyTrack(
+                      dataType: double,
+                      objectTrackId: "item2",
+                      id: "width",
+                      name: "width",
+                      group: "transfrom",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(.38, .13, .42, .32),
+                            time: 0.01,
+                            objectId: 'item2',
+                            trackId: 'width',
+                            value: 200),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 2,
+                            objectId: 'item2',
+                            trackId: 'width',
+                            value: 300),
+                      ]),
+                  "rotation": PropertyTrack(
+                      dataType: double,
+                      objectTrackId: "item2",
+                      id: "rotation",
+                      name: "rotation",
+                      group: "transfrom",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(.38, .13, .42, .32),
+                            time: 0.01,
+                            objectId: 'item2',
+                            trackId: 'rotation',
+                            value: 0),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 2,
+                            objectId: 'item2',
+                            trackId: 'rotation',
+                            value: 6.283185307179586),
+                      ]),
+                },
+                isCollapsed: false),
+            "item3": ObjectTrack(
+                id: "item3",
+                name: "item3",
+                tracks: {
+                  "x": PropertyTrack<double>(
+                      id: "x",
+                      dataType: double,
+                      objectTrackId: "item3",
+                      name: "X",
+                      group: "transfrom",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(.38, .13, .42, .32),
+                            time: 0.01,
+                            objectId: 'item3',
+                            trackId: 'x',
+                            value: 0),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 2,
+                            objectId: 'item3',
+                            trackId: 'x',
+                            value: 500),
+                      ]),
+                  "y": PropertyTrack<double>(
+                      dataType: double,
+                      objectTrackId: "item3",
+                      id: "y",
+                      name: "Y",
+                      group: "transfrom",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 0.01,
+                            objectId: '',
+                            trackId: '',
+                            value: 0),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 2,
+                            objectId: '',
+                            trackId: '',
+                            value: 350),
+                      ]),
+                  "color": PropertyTrack<Color>(
+                      dataType: Color,
+                      objectTrackId: "item3",
+                      id: "color",
+                      name: "Color",
+                      group: "Style",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 0.01,
+                            objectId: '',
+                            trackId: '',
+                            value: Color.fromARGB(255, 255, 255, 255)),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 2,
+                            objectId: '',
+                            trackId: '',
+                            value: Color.fromARGB(255, 0, 60, 255)),
+                      ]),
+                  "width": PropertyTrack<double>(
+                      dataType: double,
+                      objectTrackId: "item3",
+                      id: "width",
+                      name: "width",
+                      group: "transfrom",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(.38, .13, .42, .32),
+                            time: 0.01,
+                            objectId: 'item3',
+                            trackId: 'width',
+                            value: 200),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 2,
+                            objectId: 'item3',
+                            trackId: 'width',
+                            value: 300),
+                      ]),
+                  "rotation": PropertyTrack<double>(
+                      dataType: double,
+                      objectTrackId: "item3",
+                      id: "rotation",
+                      name: "rotation",
+                      group: "transfrom",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(.38, .13, .42, .32),
+                            time: 0.01,
+                            objectId: 'item3',
+                            trackId: 'rotation',
+                            value: 0),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 2,
+                            objectId: 'item3',
+                            trackId: 'rotation',
+                            value: 6.283185307179586),
+                      ]),
+                  "percent": PropertyTrack<double>(
+                      dataType: double,
+                      objectTrackId: "item3",
+                      id: "percent",
+                      name: "percent",
+                      group: "percent",
+                      keyframes: [
+                        Keyframe(
+                            curve: const Cubic(.38, .13, .42, .32),
+                            time: 0.01,
+                            objectId: 'item3',
+                            trackId: 'percent',
+                            value: 0.0),
+                        Keyframe(
+                            curve: const Cubic(0, 0, 1, 1),
+                            time: 4.0,
+                            objectId: 'item3',
+                            trackId: 'percent',
+                            value: 1.0),
+                      ]),
+                },
+                isCollapsed: false),
+          },
+          duration: const Duration(seconds: 5)),
+      this,
+    );
 
     super.initState();
   }

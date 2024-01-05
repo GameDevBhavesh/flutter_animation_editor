@@ -8,19 +8,21 @@ import 'package:flutter/widgets.dart';
 
 class ObjectTrackController extends BaseController
     with MultiControllerManagerMixin<PropertyTrackController> {
-  ObjectTrackController(this.objectTrack, this.key, this.context,
-      {this.inpectorBuilders}) {
+  ObjectTrackController(
+    this.objectTrack,
+    this.key,
+    this.context,
+  ) {
     for (final propertyTrack in objectTrack.tracks.entries) {
-      final inspector = inpectorBuilders![propertyTrack.value.dataType];
       addChildController(
           propertyTrack.key,
           PropertyTrackController(
-              propertyTrack.value, propertyTrack.key, context,
-              inspectorBuilder: inspector));
+            propertyTrack.value,
+            propertyTrack.key,
+            context,
+          ));
     }
   }
-  final Map<String, Widget Function(PropertyTrackController controller)>?
-      inpectorBuilders;
 
   final AnimationEditorContext context;
   final ObjectTrack objectTrack;
@@ -99,7 +101,6 @@ class ObjectTrackController extends BaseController
   }
 
   addPropertyTrack(String id, String name, Type dataType, {String? group}) {
-    final inspector = inpectorBuilders![id];
     final pTrack = objectTrack.tracks.putIfAbsent(
         id,
         () => PropertyTrack(
@@ -111,8 +112,11 @@ class ObjectTrackController extends BaseController
             keyframes: []));
     addChildController(
         id,
-        PropertyTrackController(pTrack, id, context,
-            inspectorBuilder: inspector));
+        PropertyTrackController(
+          pTrack,
+          id,
+          context,
+        ));
     notifyListeners();
   }
 
